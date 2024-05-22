@@ -5,6 +5,9 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {config} from '@gluestack-ui/config';
 
+//firestore
+import firestore from '@react-native-firebase/firestore';
+
 //importing screens
 import Welcome from './Screens/Welcome';
 import Admin from './Screens/Admin';
