@@ -17,6 +17,7 @@ import {AlertCircleIcon} from 'lucide-react-native';
 import {StyleSheet} from 'react-native';
 
 const FormControlCustom = props => {
+  console.log('Props: ', props);
   return (
     <Box>
       <FormControl
@@ -31,9 +32,8 @@ const FormControlCustom = props => {
         <Input>
           <InputField
             type={props.type}
-            defaultValue=""
             value={props.value}
-            onChange={props.handleChange}
+            onChangeText={props.handleChange}
             placeholder={props.placeholder}
           />
         </Input>
