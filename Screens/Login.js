@@ -24,11 +24,23 @@ import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 
 const Login = ({navigation, route}) => {
+  const {user, loading, setUser} = useContext(AuthContext);
+  const {type} = route.params;
+
+  if (user)
+    if (user.role === type) {
+      navigation.pop();
+      navigation.navigate(
+        type === 'student'
+          ? 'Student'
+          : type === 'teacher'
+          ? 'Teacher'
+          : 'Admin',
+      );
+    }
+
   const [identity, setIdentity] = useState('');
   const [password, setPassword] = useState('');
-  const {setUser} = useContext(AuthContext);
-
-  const {type} = route.params;
 
   const handleLogin = async e => {
     try {
