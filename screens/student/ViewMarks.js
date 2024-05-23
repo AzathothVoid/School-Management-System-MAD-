@@ -57,7 +57,7 @@ function ViewMarks() {
             //past months
             <View>
                 {markObjs.forEach((markOb) => {
-                    <MarkTable fee={markOb} />
+                    <MarkTable marks={markOb} />
                 })}
             </View>
         }

@@ -11,6 +11,7 @@ import {
 import {CircleUser, LibraryBig, LockKeyhole, LogOut} from 'lucide-react-native';
 
 function Index({navigation}) {
+
   return (
     <Box style={styles.container}>
       <Center>
@@ -35,14 +36,14 @@ function Index({navigation}) {
           </Box>
 
           <Box style={styles.buttonContainer}>
-            <Button borderRadius={20} w={150} h={120} size="lg">
+            <Button borderRadius={20} w={150} h={120} size="lg" onPress={() => navigation.navigate('StudentDashboard')}>
               <ButtonIcon marginHorizontal={5} as={LibraryBig} />
               <ButtonText>Student</ButtonText>
             </Button>
           </Box>
 
           <Box style={styles.buttonContainer}>
-            <Button borderRadius={20} w={150} h={120} size="lg">
+            <Button borderRadius={20} w={150} h={120} size="lg" onPress={() => navigation.navigate('Marks')}>
               <ButtonIcon marginHorizontal={5} as={CircleUser} />
               <ButtonText>Teacher</ButtonText>
             </Button>
