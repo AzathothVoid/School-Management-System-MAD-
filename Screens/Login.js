@@ -17,6 +17,7 @@ import {
   Center,
 } from '@gluestack-ui/themed';
 import FormControlCustom from '../components/FormControlCustom';
+import {EyeIcon, MailCheck} from 'lucide-react-native';
 
 const Login = ({navigation}) => {
   const [email, setEmail] = useState('');
@@ -37,6 +38,7 @@ const Login = ({navigation}) => {
                 helperText="Must be a Registered Email"
                 value={email}
                 onChange={setEmail}
+                icon={MailCheck}
               />
             </Box>
             <Box style={styles.Lastmargining}>
@@ -47,6 +49,7 @@ const Login = ({navigation}) => {
                 helperText="Must be atleast 6 Characters"
                 value={password}
                 onChange={setPassword}
+                icon={EyeIcon}
               />
             </Box>
             <Box style={styles.buttonContainer}>
