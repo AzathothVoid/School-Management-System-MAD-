@@ -14,6 +14,9 @@ import ViewSyllabus from './screens/student/ViewSyllabus';
 import ViewFees from './screens/student/ViewFees';
 import ViewMarks from './screens/student/ViewMarks';
 import Login from './screens/Login';
+import StudentDashboard from './screens/student';
+import AddMarks from './screens/teacher/AddMarks';
+import Marks from './screens/teacher/Marks';
 
 function App() {
   //pass to ViewSyllabus
@@ -29,6 +32,13 @@ function App() {
     'Quran',
   ];
 
+  var user = {
+    name: "Bruno",
+    regNo: "FA21-BCS-001",
+    class: 8,
+    gender: "Male"
+  }
+
   const Stack = createNativeStackNavigator();
 
   return (
@@ -43,11 +53,16 @@ function App() {
           <Stack.Screen name="ViewFees" component={ViewFees} />
           <Stack.Screen name="ViewSyllabus" component={ViewSyllabus} />
           <Stack.Screen name="ViewMarks" component={ViewMarks} />
+          <Stack.Screen name="StudentDashboard">
+            {(props) => <StudentDashboard {...props} user={user} />}
+          </Stack.Screen>
           <Stack.Screen
             name="Login"
             options={{headerShown: false}}
             component={Login}
           />
+          <Stack.Screen name="Marks" component={Marks} />
+          <Stack.Screen name="AddMarks" component={AddMarks} />
         </Stack.Navigator>
       </GluestackUIProvider>
     </NavigationContainer>

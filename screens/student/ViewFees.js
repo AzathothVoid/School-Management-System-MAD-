@@ -86,6 +86,7 @@ function ViewFees() {
         //past months
         <View>
           {feeObjs.forEach(feeOb => {
+            console.log(feeOb.amountDue);
             <FeeBox fee={feeOb} />;
           })}
         </View>
