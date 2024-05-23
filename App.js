@@ -4,6 +4,7 @@ import {GluestackUIProvider} from '@gluestack-ui/themed';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {config} from '@gluestack-ui/config';
+import {AuthProvider} from './auth/AuthContext';
 
 //firestore
 import firestore from '@react-native-firebase/firestore';
@@ -34,21 +35,23 @@ function App() {
   return (
     <NavigationContainer>
       <GluestackUIProvider config={config}>
-        <Stack.Navigator initialRouteName="index">
-          <Stack.Screen
-            name="index"
-            options={{headerShown: false}}
-            component={Index}
-          />
-          <Stack.Screen name="ViewFees" component={ViewFees} />
-          <Stack.Screen name="ViewSyllabus" component={ViewSyllabus} />
-          <Stack.Screen name="ViewMarks" component={ViewMarks} />
-          <Stack.Screen
-            name="Login"
-            options={{headerShown: false}}
-            component={Login}
-          />
-        </Stack.Navigator>
+        <AuthProvider>
+          <Stack.Navigator initialRouteName="index">
+            <Stack.Screen
+              name="index"
+              options={{headerShown: false}}
+              component={Index}
+            />
+            <Stack.Screen name="ViewFees" component={ViewFees} />
+            <Stack.Screen name="ViewSyllabus" component={ViewSyllabus} />
+            <Stack.Screen name="ViewMarks" component={ViewMarks} />
+            <Stack.Screen
+              name="Login"
+              options={{headerShown: false}}
+              component={Login}
+            />
+          </Stack.Navigator>
+        </AuthProvider>
       </GluestackUIProvider>
     </NavigationContainer>
   );
