@@ -52,7 +52,7 @@ const Login = ({navigation, route}) => {
         const {uid, email: userEmail} = userCredential.user;
         const userDoc = await firestore().collection('users').doc(uid).get();
 
-        if (type === userDoc.data().role) {
+        if (userDoc && type === userDoc.data().role) {
           setUser({
             uid,
             email: userEmail,
@@ -65,17 +65,25 @@ const Login = ({navigation, route}) => {
           throw Error();
         }
       } else {
+        console.log('IDENTITY: ', identity);
+        console.log('PASSWORD: ', password);
+
         const userDoc = await firestore()
           .collection('users')
-          .where('regNo', '=', identity)
-          .where('password', '=', password)
+          .where('regNo', '==', identity)
+          .where('password', '==', password)
           .get();
-        const {uid, regNo: studentRegNo} = userDoc;
-        if (type === userDoc.data().role) {
+
+        console.log('DOCS: ', userDoc.docs[0].data());
+        const {regNo: studentRegNo} = userDoc.docs[0].data();
+        const {uid} = userDoc.docs[0].id;
+        console.log('UID: ', uid);
+        console.log('regNo: ', studentRegNo);
+        if (userDoc.docs && type === userDoc.docs[0].data().role) {
           setUser({
             uid,
             regNo: studentRegNo,
-            role: userDoc.data().role,
+            role: userDoc.docs[0].data().role,
           });
           navigation.navigate('Student');
         } else {
