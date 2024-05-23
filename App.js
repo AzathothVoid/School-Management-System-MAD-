@@ -9,10 +9,7 @@ import {config} from '@gluestack-ui/config';
 import firestore from '@react-native-firebase/firestore';
 
 //importing screens
-import Welcome from './Screens/Welcome';
-import Admin from './Screens/Admin';
-import Student from './Screens/Student';
-import Teacher from './Screens/Teacher';
+import Index from './screens';
 import ViewSyllabus from './screens/student/ViewSyllabus';
 import ViewFees from './screens/student/ViewFees';
 import ViewMarks from './screens/student/ViewMarks';
@@ -36,11 +33,12 @@ function App() {
   return (
     <NavigationContainer>
       <GluestackUIProvider config={config}>
-        <Stack.Navigator initialRouteName="ViewFees">
-          <Stack.Screen name="Welcome" component={Welcome} />
-          {/* <Stack.Screen name="Admin" component={Admin} />
-          <Stack.Screen name="Student" component={Student} />
-          <Stack.Screen name="Teacher" component={Teacher} /> */}
+        <Stack.Navigator initialRouteName="index">
+          <Stack.Screen
+            name="index"
+            options={{headerShown: false}}
+            component={Index}
+          />
           <Stack.Screen name="ViewFees" component={ViewFees} />
           <Stack.Screen name="ViewSyllabus" component={ViewSyllabus} />
           <Stack.Screen name="ViewMarks" component={ViewMarks} />
