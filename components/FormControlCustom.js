@@ -1,4 +1,4 @@
-import React from 'react';
+import {React, useState} from 'react';
 import {
   Box,
   Center,
@@ -13,8 +13,9 @@ import {
   FormControlErrorText,
   FormControlErrorIcon,
 } from '@gluestack-ui/themed';
+import {AlertCircleIcon} from 'lucide-react-native';
 
-const FormControl = props => {
+const FormControlCustom = props => {
   return (
     <Box h="$32" w="$72">
       <FormControl
@@ -24,19 +25,19 @@ const FormControl = props => {
         isReadOnly={false}
         isRequired={false}>
         <FormControlLabel mb="$1">
-          <FormControlLabelText>Password</FormControlLabelText>
+          <FormControlLabelText>{props.label}</FormControlLabelText>
         </FormControlLabel>
         <Input>
           <InputField
-            type="password"
+            type={props.type}
             defaultValue="12345"
-            placeholder="password"
+            value={props.value}
+            onChange={props.handleChange}
+            placeholder={props.placeholder}
           />
         </Input>
         <FormControlHelper>
-          <FormControlHelperText>
-            Must be at least 6 characters.
-          </FormControlHelperText>
+          <FormControlHelperText>{props.helperText}</FormControlHelperText>
         </FormControlHelper>
         <FormControlError>
           <FormControlErrorIcon as={AlertCircleIcon} />
@@ -48,3 +49,5 @@ const FormControl = props => {
     </Box>
   );
 };
+
+export default FormControl;
