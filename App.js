@@ -18,6 +18,8 @@ import Login from './screens/Login';
 import StudentDashboard from './screens/student';
 import TeacherDashboard from './screens/teacher';
 import AdminDashboard from './screens/admin';
+import AddMarks from './screens/teacher/AddMarks';
+import Marks from './screens/teacher/Marks';
 
 function App() {
   //pass to ViewSyllabus
@@ -32,6 +34,13 @@ function App() {
     'Computer Part 2',
     'Quran',
   ];
+
+  var user = {
+    name: "Bruno",
+    regNo: "FA21-BCS-001",
+    class: 8,
+    gender: "Male"
+  }
 
   const Stack = createNativeStackNavigator();
 
@@ -51,12 +60,17 @@ function App() {
             <Stack.Screen name="Student" component={StudentDashboard} />
             <Stack.Screen name="Teacher" component={TeacherDashboard} />
             <Stack.Screen name="Admin" component={AdminDashboard} />
-            <Stack.Screen
+            <Stack.Screen name="StudentDashboard">
+            {(props) => <StudentDashboard {...props} user={user} />}
+          </Stack.Screen>
+          <Stack.Screen
               name="Login"
               options={{headerShown: false}}
               component={Login}
             />
-          </Stack.Navigator>
+            <Stack.Screen name="Marks" component={Marks} />
+          <Stack.Screen name="AddMarks" component={AddMarks} />
+        </Stack.Navigator>
         </AuthProvider>
       </GluestackUIProvider>
     </NavigationContainer>
