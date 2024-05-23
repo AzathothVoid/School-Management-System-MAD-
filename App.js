@@ -1,33 +1,56 @@
 import React from 'react';
-import {View, StyleSheet, Text} from 'react-native';
+import {SafeAreaView, View, StyleSheet, Text} from 'react-native';
+import {GluestackUIProvider} from '@gluestack-ui/themed';
+import {NavigationContainer} from '@react-navigation/native';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {config} from '@gluestack-ui/config';
 
-import { GluestackUIProvider } from '@gluestack-ui/themed';
-import { config } from '@gluestack-ui/config';
+//firestore
+import firestore from '@react-native-firebase/firestore';
 
+//importing screens
+import Index from './screens';
 import ViewSyllabus from './screens/student/ViewSyllabus';
 import ViewFees from './screens/student/ViewFees';
 import ViewMarks from './screens/student/ViewMarks';
-
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import Login from './screens/Login';
 
 function App() {
-
   //pass to ViewSyllabus
-  var subjects = ["English", "Urdu", "Math", "General Knowledge", "Social Studies", "Islamiyat", "Computer Part 1", "Computer Part 2", "Quran"]
+  var subjects = [
+    'English',
+    'Urdu',
+    'Math',
+    'General Knowledge',
+    'Social Studies',
+    'Islamiyat',
+    'Computer Part 1',
+    'Computer Part 2',
+    'Quran',
+  ];
 
   const Stack = createNativeStackNavigator();
 
   return (
-    <GluestackUIProvider config={config}>
-        <NavigationContainer>
-          <Stack.Navigator initialRouteName='ViewMarks'>
-            <Stack.Screen name='ViewFees' component={ViewFees} />
-            <Stack.Screen name='ViewSyllabus' component={ViewSyllabus} />
-            <Stack.Screen name='ViewMarks' component={ViewMarks} />
-          </Stack.Navigator>
-        </NavigationContainer>
-    </GluestackUIProvider>
+    <NavigationContainer>
+      <GluestackUIProvider config={config}>
+        <Stack.Navigator initialRouteName="index">
+          <Stack.Screen
+            name="index"
+            options={{headerShown: false}}
+            component={Index}
+          />
+          <Stack.Screen name="ViewFees" component={ViewFees} />
+          <Stack.Screen name="ViewSyllabus" component={ViewSyllabus} />
+          <Stack.Screen name="ViewMarks" component={ViewMarks} />
+          <Stack.Screen
+            name="Login"
+            options={{headerShown: false}}
+            component={Login}
+          />
+        </Stack.Navigator>
+      </GluestackUIProvider>
+    </NavigationContainer>
   );
 }
 
