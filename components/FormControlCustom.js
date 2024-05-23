@@ -14,31 +14,32 @@ import {
   FormControlErrorIcon,
 } from '@gluestack-ui/themed';
 import {AlertCircleIcon} from 'lucide-react-native';
+import {StyleSheet} from 'react-native';
 
 const FormControlCustom = props => {
   return (
-    <Box h="$32" w="$72">
+    <Box>
       <FormControl
         size="md"
         isDisabled={false}
         isInvalid={false}
         isReadOnly={false}
         isRequired={false}>
-        <FormControlLabel mb="$1">
+        {/* <FormControlLabel mb="$1">
           <FormControlLabelText>{props.label}</FormControlLabelText>
-        </FormControlLabel>
+        </FormControlLabel> */}
         <Input>
           <InputField
             type={props.type}
-            defaultValue="12345"
+            defaultValue=""
             value={props.value}
             onChange={props.handleChange}
             placeholder={props.placeholder}
           />
         </Input>
-        <FormControlHelper>
+        {/* <FormControlHelper>
           <FormControlHelperText>{props.helperText}</FormControlHelperText>
-        </FormControlHelper>
+        </FormControlHelper> */}
         <FormControlError>
           <FormControlErrorIcon as={AlertCircleIcon} />
           <FormControlErrorText>
@@ -50,4 +51,6 @@ const FormControlCustom = props => {
   );
 };
 
-export default FormControl;
+const styles = StyleSheet.create({});
+
+export default FormControlCustom;

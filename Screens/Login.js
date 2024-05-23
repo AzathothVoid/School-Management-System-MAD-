@@ -1,5 +1,5 @@
 import {React, useState, useEffect} from 'react';
-import {SafeAreaView, Image, StyleSheet} from 'react-native';
+import {SafeAreaView, Image, StyleSheet, Text} from 'react-native';
 import {
   Heading,
   Button,
@@ -10,7 +10,6 @@ import {
   Center,
 } from '@gluestack-ui/themed';
 import FormControlCustom from '../components/FormControlCustom';
-import {LogIn} from 'lucide-react-native';
 
 const Login = ({navigation}) => {
   const [email, setEmail] = useState('');
@@ -18,33 +17,40 @@ const Login = ({navigation}) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Image source={require('../assets/login.jpg')} style={styles.image} />
-      <Heading>Login Now</Heading>
-
-      <Box>
-        <VStack>
-          <FormControlCustom
-            label="Email"
-            type="email"
-            placeholder="Email"
-            helperText="Must be a Registered Email"
-            value={email}
-            onChange={setEmail}
-          />
-          <FormControlCustom
-            label="Password"
-            type="password"
-            placeholder="Password"
-            helperText="Must be atleast 6 Characters"
-            value={password}
-            onChange={setPassword}
-          />
-          <Button>
-            <ButtonIcon as={LogIn} />
-            <ButtonText>Login</ButtonText>
-          </Button>
+      <Center>
+        <Image source={require('../assets/login.jpg')} style={styles.image} />
+        <Heading style={styles.heading}>Login Now</Heading>
+        <VStack style={styles.body}>
+          <Box style={styles.margining}>
+            <FormControlCustom
+              label="Email"
+              type="email"
+              placeholder="Email"
+              helperText="Must be a Registered Email"
+              value={email}
+              onChange={setEmail}
+            />
+          </Box>
+          <Box style={styles.Lastmargining}>
+            <FormControlCustom
+              label="Password"
+              type="password"
+              placeholder="Password"
+              helperText="Must be atleast 6 Characters"
+              value={password}
+              onChange={setPassword}
+            />
+          </Box>
+          <Box style={styles.buttonContainer}>
+            <Button style={styles.button} borderRadius={10}>
+              <ButtonText>Login</ButtonText>
+            </Button>
+            <Text style={styles.note}>
+              Note: Login details have been provided by school
+            </Text>
+          </Box>
         </VStack>
-      </Box>
+      </Center>
     </SafeAreaView>
   );
 };
@@ -52,9 +58,37 @@ const Login = ({navigation}) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    background: '#fff',
+    backgroundColor: '#fff',
   },
-  image: {},
+  image: {
+    marginVertical: 10,
+    width: 300,
+    height: 300,
+  },
+  buttonContainer: {
+    width: '80%',
+    alignSelf: 'center',
+  },
+  button: {
+    backgroundColor: '#1C588C',
+    height: 50,
+    marginBottom: 10,
+  },
+  body: {
+    width: '80%',
+  },
+  heading: {
+    color: '#1C588C',
+  },
+  margining: {
+    marginVertical: 20,
+  },
+  Lastmargining: {
+    marginBottom: 22,
+  },
+  note: {
+    fontSize: 10,
+  },
 });
 
 export default Login;

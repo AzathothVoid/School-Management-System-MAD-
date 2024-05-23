@@ -13,6 +13,7 @@ import Index from './screens';
 import ViewSyllabus from './screens/student/ViewSyllabus';
 import ViewFees from './screens/student/ViewFees';
 import ViewMarks from './screens/student/ViewMarks';
+import Login from './screens/Login';
 
 function App() {
   //pass to ViewSyllabus
@@ -42,6 +43,11 @@ function App() {
           <Stack.Screen name="ViewFees" component={ViewFees} />
           <Stack.Screen name="ViewSyllabus" component={ViewSyllabus} />
           <Stack.Screen name="ViewMarks" component={ViewMarks} />
+          <Stack.Screen
+            name="Login"
+            options={{headerShown: false}}
+            component={Login}
+          />
         </Stack.Navigator>
       </GluestackUIProvider>
     </NavigationContainer>

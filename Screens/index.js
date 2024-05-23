@@ -12,16 +12,23 @@ import {CircleUser, LibraryBig, LockKeyhole, LogOut} from 'lucide-react-native';
 
 function Index({navigation}) {
   return (
-    <SafeAreaView style={styles.container}>
+    <Box style={styles.container}>
       <Center>
-        <Heading style={styles.heading}>Welcome to SMS</Heading>
+        <Heading color="primary0" style={styles.heading}>
+          Welcome to SMS
+        </Heading>
         <Image
           source={require('../assets/index_Image.jpg')}
           style={styles.image}
         />
         <Box style={styles.body}>
           <Box style={styles.buttonContainer}>
-            <Button borderRadius={20} w={150} h={120} size="lg">
+            <Button
+              onPress={() => navigation.navigate('Login')}
+              borderRadius={20}
+              w={150}
+              h={120}
+              size="lg">
               <ButtonIcon marginHorizontal={5} as={LockKeyhole} />
               <ButtonText>Admin</ButtonText>
             </Button>
@@ -49,7 +56,7 @@ function Index({navigation}) {
           </Box>
         </Box>
       </Center>
-    </SafeAreaView>
+    </Box>
   );
 }
 
