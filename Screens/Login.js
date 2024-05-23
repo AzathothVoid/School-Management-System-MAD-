@@ -1,6 +1,5 @@
-import {React, useState, useEffect} from 'react';
+import {React, useState, useEffect, useContext} from 'react';
 import {
-  SafeAreaView,
   Image,
   StyleSheet,
   Text,
@@ -17,11 +16,64 @@ import {
   Center,
 } from '@gluestack-ui/themed';
 import FormControlCustom from '../components/FormControlCustom';
-import {EyeIcon, MailCheck} from 'lucide-react-native';
+import {EyeIcon, MailCheck, User} from 'lucide-react-native';
+import {AuthContext} from '../auth/AuthContext';
 
-const Login = ({navigation}) => {
-  const [email, setEmail] = useState('');
+//firebase
+import auth from '@react-native-firebase/auth';
+import firestore from '@react-native-firebase/firestore';
+
+const Login = ({navigation, route}) => {
+  const [identity, setIdentity] = useState('');
   const [password, setPassword] = useState('');
+  const {setUser} = useContext(AuthContext);
+
+  const {type} = route.params;
+
+  const handleLogin = async e => {
+    try {
+      if (type !== 'student') {
+        const userCredential = await auth().signInWithEmailAndPassword(
+          identity,
+          password,
+        );
+        const {uid, email: userEmail} = userCredential.user;
+        const userDoc = await firestore().collection('users').doc(uid).get();
+
+        if (type === userDoc.data().role) {
+          setUser({
+            uid,
+            email: userEmail,
+            role: userDoc.data().role,
+          });
+          navigation.navigate(
+            userDoc.data().role === 'admin' ? 'Admin' : 'Teacher',
+          );
+        } else {
+          throw Error();
+        }
+      } else {
+        const userDoc = await firestore()
+          .collection('users')
+          .where('regNo', '=', identity)
+          .where('password', '=', password)
+          .get();
+        const {uid, regNo: studentRegNo} = userDoc;
+        if (type === userDoc.data().role) {
+          setUser({
+            uid,
+            regNo: studentRegNo,
+            role: userDoc.data().role,
+          });
+          navigation.navigate('Student');
+        } else {
+          throw Error();
+        }
+      }
+    } catch (error) {
+      console.log('Login Failed: ', error);
+    }
+  };
 
   return (
     <KeyboardAvoidingView style={styles.container} behavior={'height'} enabled>
@@ -32,13 +84,17 @@ const Login = ({navigation}) => {
           <VStack style={styles.body}>
             <Box style={styles.margining}>
               <FormControlCustom
-                label="Email"
-                type="email"
-                placeholder="Email"
-                helperText="Must be a Registered Email"
-                value={email}
-                onChange={setEmail}
-                icon={MailCheck}
+                label={type !== 'student' ? 'Email' : 'Registration no'}
+                type={type !== 'student' ? 'email' : 'text'}
+                placeholder={type !== 'student' ? 'Email' : 'Registration no'}
+                helperText={
+                  type !== 'student'
+                    ? 'Must be a Registered Email'
+                    : 'Must be a valid Registration no'
+                }
+                value={identity}
+                onChange={setIdentity}
+                icon={type !== 'student' ? MailCheck : User}
               />
             </Box>
             <Box style={styles.Lastmargining}>
@@ -53,7 +109,10 @@ const Login = ({navigation}) => {
               />
             </Box>
             <Box style={styles.buttonContainer}>
-              <Button style={styles.button} borderRadius={10}>
+              <Button
+                onPress={handleLogin}
+                style={styles.button}
+                borderRadius={10}>
                 <ButtonText>Login</ButtonText>
               </Button>
               <Text style={styles.note}>

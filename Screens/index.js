@@ -24,7 +24,7 @@ function Index({navigation}) {
         <Box style={styles.body}>
           <Box style={styles.buttonContainer}>
             <Button
-              onPress={() => navigation.navigate('Login')}
+              onPress={() => navigation.navigate('Login', {type: 'admin'})}
               borderRadius={20}
               w={150}
               h={120}
@@ -35,14 +35,24 @@ function Index({navigation}) {
           </Box>
 
           <Box style={styles.buttonContainer}>
-            <Button borderRadius={20} w={150} h={120} size="lg">
+            <Button
+              onPress={() => navigation.navigate('Login', {type: 'student'})}
+              borderRadius={20}
+              w={150}
+              h={120}
+              size="lg">
               <ButtonIcon marginHorizontal={5} as={LibraryBig} />
               <ButtonText>Student</ButtonText>
             </Button>
           </Box>
 
           <Box style={styles.buttonContainer}>
-            <Button borderRadius={20} w={150} h={120} size="lg">
+            <Button
+              onPress={() => navigation.navigate('Login', {type: 'teacher'})}
+              borderRadius={20}
+              w={150}
+              h={120}
+              size="lg">
               <ButtonIcon marginHorizontal={5} as={CircleUser} />
               <ButtonText>Teacher</ButtonText>
             </Button>
