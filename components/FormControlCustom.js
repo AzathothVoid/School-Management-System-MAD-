@@ -33,7 +33,7 @@ const FormControlCustom = props => {
           <InputField
             type={props.type}
             value={props.value}
-            onChangeText={props.handleChange}
+            onChangeText={props.onChange}
             placeholder={props.placeholder}
           />
         </Input>
