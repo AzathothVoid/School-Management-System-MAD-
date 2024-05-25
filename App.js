@@ -1,9 +1,10 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import {SafeAreaView, View, StyleSheet, Text} from 'react-native';
 import {GluestackUIProvider} from '@gluestack-ui/themed';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {config} from '@gluestack-ui/config';
+import {AuthProvider} from './auth/AuthContext';
 
 //firestore
 import firestore from '@react-native-firebase/firestore';
@@ -15,6 +16,8 @@ import ViewFees from './screens/student/ViewFees';
 import ViewMarks from './screens/student/ViewMarks';
 import Login from './screens/Login';
 import StudentDashboard from './screens/student';
+import TeacherDashboard from './screens/teacher';
+import AdminDashboard from './screens/admin';
 import AddMarks from './screens/teacher/AddMarks';
 import Marks from './screens/teacher/Marks';
 
@@ -44,26 +47,31 @@ function App() {
   return (
     <NavigationContainer>
       <GluestackUIProvider config={config}>
-        <Stack.Navigator initialRouteName="index">
-          <Stack.Screen
-            name="index"
-            options={{headerShown: false}}
-            component={Index}
-          />
-          <Stack.Screen name="ViewFees" component={ViewFees} />
-          <Stack.Screen name="ViewSyllabus" component={ViewSyllabus} />
-          <Stack.Screen name="ViewMarks" component={ViewMarks} />
-          <Stack.Screen name="StudentDashboard">
+        <AuthProvider>
+          <Stack.Navigator initialRouteName="index">
+            <Stack.Screen
+              name="index"
+              options={{headerShown: false}}
+              component={Index}
+            />
+            <Stack.Screen name="ViewFees" component={ViewFees} />
+            <Stack.Screen name="ViewSyllabus" component={ViewSyllabus} />
+            <Stack.Screen name="ViewMarks" component={ViewMarks} />
+            <Stack.Screen name="Student" component={StudentDashboard} />
+            <Stack.Screen name="Teacher" component={TeacherDashboard} />
+            <Stack.Screen name="Admin" component={AdminDashboard} />
+            <Stack.Screen name="StudentDashboard">
             {(props) => <StudentDashboard {...props} user={user} />}
           </Stack.Screen>
           <Stack.Screen
-            name="Login"
-            options={{headerShown: false}}
-            component={Login}
-          />
-          <Stack.Screen name="Marks" component={Marks} />
+              name="Login"
+              options={{headerShown: false}}
+              component={Login}
+            />
+            <Stack.Screen name="Marks" component={Marks} />
           <Stack.Screen name="AddMarks" component={AddMarks} />
         </Stack.Navigator>
+        </AuthProvider>
       </GluestackUIProvider>
     </NavigationContainer>
   );

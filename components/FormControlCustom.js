@@ -1,7 +1,7 @@
 import {React, useState} from 'react';
 import {
   Box,
-  Center,
+  InputSlot,
   FormControl,
   // FormControlLabel,
   // FormControlLabelText,
@@ -9,6 +9,7 @@ import {
   InputField,
   // FormControlHelper,
   // FormControlHelperText,
+  InputIcon,
   FormControlError,
   FormControlErrorText,
   FormControlErrorIcon,
@@ -29,13 +30,16 @@ const FormControlCustom = props => {
         {/* <FormControlLabel mb="$1">
           <FormControlLabelText>{props.label}</FormControlLabelText>
         </FormControlLabel> */}
-        <Input>
+        <Input pr="$3" textAlign="center">
           <InputField
             type={props.type}
             value={props.value}
             onChangeText={props.onChange}
             placeholder={props.placeholder}
           />
+          <InputSlot>
+            <InputIcon as={props.icon} />
+          </InputSlot>
         </Input>
         {/* <FormControlHelper>
           <FormControlHelperText>{props.helperText}</FormControlHelperText>
