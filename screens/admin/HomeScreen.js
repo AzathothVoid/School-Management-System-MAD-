@@ -1,8 +1,8 @@
-import React, {useLayoutEffect} from 'react';
+import React, {useLayoutEffect, useState, useRef} from 'react';
 import {StyleSheet} from 'react-native';
 import {
   Box,
-  View,
+  Pressable,
   HStack,
   Image,
   VStack,
@@ -10,20 +10,33 @@ import {
   Text,
   Heading,
 } from '@gluestack-ui/themed';
-import {User} from 'lucide-react-native';
+import {
+  User,
+  ClipboardMinus,
+  Landmark,
+  BookOpenText,
+  CalendarClock,
+} from 'lucide-react-native';
+import {ScrollView} from '@gluestack-ui/themed';
 import Header from '../../components/Header';
 import ServiceBox from '../../components/ServiceBox';
+import AddStudent from './studentServices/AddStudent';
 
-const HomeScreen = ({navigation}, props) => {
+const HomeScreen = ({navigation, route}, props) => {
+  const [addStudentModal, setAddStudent] = useState(false);
+
+  const addStudentRef = useRef(null);
+
   useLayoutEffect(() => {
     navigation.setOptions({
       headerBackTitle: 'Back',
       // headerTitle: props => <Header {...props} />,
+      headerShown: false,
     });
   }, [navigation]);
 
   return (
-    <View m="$5">
+    <ScrollView m="$5">
       <Box rounded="$lg" bg="$blue700" px="$4" alignItems="center" py="$6">
         <HStack>
           <Image
@@ -65,9 +78,110 @@ const HomeScreen = ({navigation}, props) => {
           />
         </HStack>
       </Box>
-      <Heading>Student Services</Heading>
-      <Heading>Teacher Services</Heading>
-    </View>
+
+      <Box marginVertical="$4">
+        <Box>
+          <Heading mb="$2">Student Services</Heading>
+          <HStack alignItems="center">
+            <Pressable onPress={() => setAddStudent(true)}>
+              <ServiceBox
+                action={AddStudent}
+                text="Add"
+                Icon={
+                  <Landmark size={25} color="#000000" style={{margin: 10}} />
+                }
+              />
+            </Pressable>
+            <ServiceBox
+              text="View"
+              Icon={
+                <BookOpenText size={25} color="#000000" style={{margin: 10}} />
+              }
+            />
+            <ServiceBox
+              text="Update"
+              Icon={
+                <CalendarClock size={25} color="#000000" style={{margin: 10}} />
+              }
+            />
+            <ServiceBox
+              text="Delete"
+              Icon={
+                <CalendarClock size={25} color="#000000" style={{margin: 10}} />
+              }
+            />
+          </HStack>
+        </Box>
+        <Box>
+          <Heading mb="$2">Fee Services</Heading>
+          <HStack>
+            <ServiceBox
+              text="Add"
+              Icon={
+                <CalendarClock size={25} color="#000000" style={{margin: 10}} />
+              }
+            />
+            <ServiceBox
+              text="View"
+              Icon={
+                <CalendarClock size={25} color="#000000" style={{margin: 10}} />
+              }
+            />
+            <ServiceBox
+              text="Update"
+              Icon={
+                <CalendarClock size={25} color="#000000" style={{margin: 10}} />
+              }
+            />
+            <ServiceBox
+              text="Delete"
+              Icon={
+                <CalendarClock size={25} color="#000000" style={{margin: 10}} />
+              }
+            />
+          </HStack>
+        </Box>
+        <Box>
+          <Heading mb="$2">Teacher Services</Heading>
+          <HStack alignItems="center">
+            <ServiceBox
+              text="Class"
+              Icon={
+                <CalendarClock size={25} color="#000000" style={{margin: 10}} />
+              }
+            />
+          </HStack>
+        </Box>
+        <Box>
+          <Heading>Other Services</Heading>
+          <HStack>
+            <ServiceBox
+              text="Reports"
+              Icon={
+                <CalendarClock size={25} color="#000000" style={{margin: 10}} />
+              }
+            />
+            <ServiceBox
+              text="Timetable"
+              Icon={
+                <CalendarClock size={25} color="#000000" style={{margin: 10}} />
+              }
+            />
+            <ServiceBox
+              text="Syllabus"
+              Icon={
+                <CalendarClock size={25} color="#000000" style={{margin: 10}} />
+              }
+            />
+          </HStack>
+        </Box>
+      </Box>
+      <AddStudent
+        showModal={addStudentModal}
+        setShowModal={setAddStudent}
+        ref={addStudentRef}
+      />
+    </ScrollView>
   );
 };
 

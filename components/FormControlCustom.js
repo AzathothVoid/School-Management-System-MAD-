@@ -3,8 +3,8 @@ import {
   Box,
   InputSlot,
   FormControl,
-  // FormControlLabel,
-  // FormControlLabelText,
+  FormControlLabel,
+  FormControlLabelText,
   Input,
   InputField,
   // FormControlHelper,
@@ -26,16 +26,19 @@ const FormControlCustom = props => {
         isDisabled={false}
         isInvalid={false}
         isReadOnly={false}
-        isRequired={false}>
-        {/* <FormControlLabel mb="$1">
-          <FormControlLabelText>{props.label}</FormControlLabelText>
-        </FormControlLabel> */}
+        isRequired={props.required ? true : false}>
+        {props.label ? (
+          <FormControlLabel mb="$2">
+            <FormControlLabelText>{props.label}</FormControlLabelText>
+          </FormControlLabel>
+        ) : null}
         <Input pr="$3" textAlign="center">
           <InputField
             type={props.type}
             value={props.value}
             onChangeText={props.onChange}
             placeholder={props.placeholder}
+            keyboardType={props?.keyboardType}
           />
           <InputSlot>
             <InputIcon as={props.icon} />
@@ -43,13 +46,13 @@ const FormControlCustom = props => {
         </Input>
         {/* <FormControlHelper>
           <FormControlHelperText>{props.helperText}</FormControlHelperText>
-        </FormControlHelper> */}
+        </FormControlHelper>
         <FormControlError>
           <FormControlErrorIcon as={AlertCircleIcon} />
           <FormControlErrorText>
             At least 6 characters are required.
           </FormControlErrorText>
-        </FormControlError>
+        </FormControlError> */}
       </FormControl>
     </Box>
   );
