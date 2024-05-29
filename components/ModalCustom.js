@@ -24,6 +24,7 @@ const ModalCustom = ({
   action,
   actionText,
   ref,
+  scrollHorizontal,
 }) => {
   return (
     <Modal

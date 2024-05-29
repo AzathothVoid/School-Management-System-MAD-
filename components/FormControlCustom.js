@@ -25,7 +25,7 @@ const FormControlCustom = props => {
         size="md"
         isDisabled={false}
         isInvalid={false}
-        isReadOnly={false}
+        isReadOnly={props.readOnly ? true : false}
         isRequired={props.required ? true : false}>
         {props.label ? (
           <FormControlLabel mb="$2">
