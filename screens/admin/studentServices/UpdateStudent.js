@@ -51,6 +51,10 @@ const UpdateStudent = ({showModal, setShowModal, ref}, props) => {
   const [updateModal, setUpdateModal] = useState(false);
   const updateRef = useRef(null);
 
+  const [resultModal, setResultModal] = useState(false);
+  const [resultText, setResultText] = useState('');
+  const resultRef = useRef(null);
+
   const studentElements = data.students.map(student => {
     return <SelectItem label={student.regNo} value={student.regNo} />;
   });
@@ -84,156 +88,166 @@ const UpdateStudent = ({showModal, setShowModal, ref}, props) => {
 
   return (
     <Box>
-      {!updateModal ? (
-        <ModalCustom
-          showModal={showModal}
-          setShowModal={setShowModal}
-          ref={ref}
-          action={loadData}
-          actionText={'Update'}
-          heading="Update Student">
-          <FormControl isRequired>
-            <Select onValueChange={regNo => setRegNo(regNo)}>
-              <SelectTrigger variant="outline" size="md">
-                <SelectInput
-                  placeholder={regNo ? ' ' + regNo : 'Select Registratio no'}
-                />
-                <SelectIcon mr="$3">
-                  <Icon as={ChevronDownIcon} />
-                </SelectIcon>
-              </SelectTrigger>
-              <SelectPortal>
-                <SelectBackdrop />
-                <SelectContent>
-                  <SelectDragIndicatorWrapper>
-                    <SelectDragIndicator />
-                  </SelectDragIndicatorWrapper>
-                  <ScrollView>{studentElements}</ScrollView>
-                </SelectContent>
-              </SelectPortal>
-            </Select>
+      <ModalCustom
+        showModal={showModal}
+        setShowModal={setShowModal}
+        ref={ref}
+        action={loadData}
+        actionText={'Update'}
+        heading="Update Student">
+        <FormControl isRequired>
+          <Select onValueChange={regNo => setRegNo(regNo)}>
+            <SelectTrigger variant="outline" size="md">
+              <SelectInput
+                placeholder={regNo ? ' ' + regNo : 'Select Registratio no'}
+              />
+              <SelectIcon mr="$3">
+                <Icon as={ChevronDownIcon} />
+              </SelectIcon>
+            </SelectTrigger>
+            <SelectPortal>
+              <SelectBackdrop />
+              <SelectContent>
+                <SelectDragIndicatorWrapper>
+                  <SelectDragIndicator />
+                </SelectDragIndicatorWrapper>
+                <ScrollView>{studentElements}</ScrollView>
+              </SelectContent>
+            </SelectPortal>
+          </Select>
+        </FormControl>
+      </ModalCustom>
+
+      <ModalCustom
+        action={updateStudent}
+        actionText={'Update'}
+        heading="Update Student"
+        showModal={updateModal}
+        setShowModal={setUpdateModal}
+        ref={updateRef}>
+        <VStack space="lg">
+          <FormControlCustom
+            type={'number'}
+            value={'' + regNo}
+            onChange={setRegNo}
+            keyboardType="numeric"
+            label="Registration No"
+            required={true}
+          />
+
+          <FormControl isRequired={true}>
+            <FormControlLabel>
+              <FormControlLabelText>Date of Admission</FormControlLabelText>
+            </FormControlLabel>
+            <Center>
+              <DatePicker
+                date={dateOfReg}
+                mode="date"
+                onDateChange={date => setDateOfReg(date)}
+                onConfirm={date => {
+                  setDateOfReg(date);
+                }}
+              />
+            </Center>
           </FormControl>
-        </ModalCustom>
-      ) : (
-        <ModalCustom
-          action={updateStudent}
-          actionText={'Update'}
-          heading="Update Student"
-          showModal={updateModal}
-          setShowModal={setUpdateModal}
-          ref={updateRef}>
-          <VStack space="lg">
-            <FormControlCustom
-              type={'number'}
-              value={'' + regNo}
-              onChange={setRegNo}
-              keyboardType="numeric"
-              label="Registration No"
-              required={true}
-            />
 
-            <FormControl isRequired={true}>
-              <FormControlLabel>
-                <FormControlLabelText>Date of Admission</FormControlLabelText>
-              </FormControlLabel>
-              <Center>
-                <DatePicker
-                  date={dateOfReg}
-                  mode="date"
-                  onDateChange={date => setDateOfReg(date)}
-                  onConfirm={date => {
-                    setDateOfReg(date);
-                  }}
-                />
-              </Center>
-            </FormControl>
+          <FormControlCustom
+            type={'text'}
+            value={studentName}
+            onChange={setStudentName}
+            label={'Student Name'}
+            required={true}
+          />
+          <FormControl isRequired={true}>
+            <FormControlLabel>
+              <FormControlLabelText>Date of Birth</FormControlLabelText>
+            </FormControlLabel>
+            <Center>
+              <DatePicker
+                date={DOB}
+                mode="date"
+                onDateChange={date => setDOB(date)}
+                onConfirm={date => {
+                  setDOB(date);
+                }}
+              />
+            </Center>
+          </FormControl>
+          <FormControlCustom
+            type={'text'}
+            value={gender}
+            onChange={setGender}
+            label={'Gender'}
+            required={true}
+          />
+          <FormControlCustom
+            type={'text'}
+            value={fatherName}
+            onChange={setFatherName}
+            label={'Father Name'}
+            required={true}
+          />
+          <FormControlCustom
+            type={'text'}
+            value={caste}
+            onChange={setCaste}
+            label={'Caste'}
+          />
+          <FormControlCustom
+            type={'text'}
+            value={occupation}
+            onChange={setOccupation}
+            label={'Occupation'}
+            required={true}
+          />
+          <FormControlCustom
+            type={'text'}
+            value={residence}
+            onChange={setResidence}
+            label={'Residence'}
+            required={true}
+          />
+          <FormControlCustom
+            type={'text'}
+            value={admissionClass}
+            onChange={setAdmissionClass}
+            label={'Admission Class'}
+            required={true}
+          />
+          <FormControlCustom
+            type={'email'}
+            value={email}
+            onChange={setEmail}
+            label={'Email'}
+            required={true}
+          />
+          <FormControlCustom
+            type={'text'}
+            value={password}
+            onChange={setPassword}
+            label={'Password'}
+            required={true}
+          />
+          <FormControlCustom
+            type={'text'}
+            value={remarks}
+            onChange={setRemarks}
+            label={'Remarks'}
+          />
+        </VStack>
+      </ModalCustom>
 
-            <FormControlCustom
-              type={'text'}
-              value={studentName}
-              onChange={setStudentName}
-              label={'Student Name'}
-              required={true}
-            />
-            <FormControl isRequired={true}>
-              <FormControlLabel>
-                <FormControlLabelText>Date of Birth</FormControlLabelText>
-              </FormControlLabel>
-              <Center>
-                <DatePicker
-                  date={DOB}
-                  mode="date"
-                  onDateChange={date => setDOB(date)}
-                  onConfirm={date => {
-                    setDOB(date);
-                  }}
-                />
-              </Center>
-            </FormControl>
-            <FormControlCustom
-              type={'text'}
-              value={gender}
-              onChange={setGender}
-              label={'Gender'}
-              required={true}
-            />
-            <FormControlCustom
-              type={'text'}
-              value={fatherName}
-              onChange={setFatherName}
-              label={'Father Name'}
-              required={true}
-            />
-            <FormControlCustom
-              type={'text'}
-              value={caste}
-              onChange={setCaste}
-              label={'Caste'}
-            />
-            <FormControlCustom
-              type={'text'}
-              value={occupation}
-              onChange={setOccupation}
-              label={'Occupation'}
-              required={true}
-            />
-            <FormControlCustom
-              type={'text'}
-              value={residence}
-              onChange={setResidence}
-              label={'Residence'}
-              required={true}
-            />
-            <FormControlCustom
-              type={'text'}
-              value={admissionClass}
-              onChange={setAdmissionClass}
-              label={'Admission Class'}
-              required={true}
-            />
-            <FormControlCustom
-              type={'email'}
-              value={email}
-              onChange={setEmail}
-              label={'Email'}
-              required={true}
-            />
-            <FormControlCustom
-              type={'text'}
-              value={password}
-              onChange={setPassword}
-              label={'Password'}
-              required={true}
-            />
-            <FormControlCustom
-              type={'text'}
-              value={remarks}
-              onChange={setRemarks}
-              label={'Remarks'}
-            />
-          </VStack>
-        </ModalCustom>
-      )}
+      <ModalCustom
+        action={() => setResultModal(false)}
+        actionText={'OK'}
+        heading={'Alert'}
+        showModal={resultModal}
+        setShowModal={setResultModal}
+        ref={resultRef}>
+        <Box>
+          <Text>{resultText}</Text>
+        </Box>
+      </ModalCustom>
     </Box>
   );
 };

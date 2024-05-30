@@ -20,7 +20,7 @@ import {
   ChevronDownIcon,
   ScrollView,
   Pressable,
-  Heading,
+  Text,
 } from '@gluestack-ui/themed';
 import FormControlCustom from '../../../components/FormControlCustom';
 import DatePicker from 'react-native-date-picker';
@@ -39,6 +39,10 @@ const DeleteFees = ({showModal, setShowModal, ref}, props) => {
 
   const [deleteModal, setDeleteModal] = useState(false);
   const [feesDisplayModal, setFeesDisplayModal] = useState(false);
+
+  const [resultModal, setResultModal] = useState(false);
+  const [resultText, setResultText] = useState('');
+  const resultRef = useRef(null);
 
   const studentData = data.students.find(student => student.regNo === regNo);
 
@@ -137,6 +141,18 @@ const DeleteFees = ({showModal, setShowModal, ref}, props) => {
         size="full"
         heading="Delete Fees">
         {feesElements}
+      </ModalCustom>
+
+      <ModalCustom
+        action={() => setResultModal(false)}
+        actionText={'OK'}
+        heading={'Alert'}
+        showModal={resultModal}
+        setShowModal={setResultModal}
+        ref={resultRef}>
+        <Box>
+          <Text>{resultText}</Text>
+        </Box>
       </ModalCustom>
     </Box>
   );

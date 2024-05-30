@@ -31,6 +31,8 @@ import UpdateFees from './feeServices/UpdateFees';
 import ViewFees from './feeServices/ViewFees';
 import DeleteFees from './feeServices/DeleteFees';
 
+import ChangeTeacherClass from './teacherServices/ChangeTeacherClass';
+
 const HomeScreen = ({navigation, route}, props) => {
   const [addStudentModal, setAddStudent] = useState(false);
   const [viewStudentModal, setViewStudent] = useState(false);
@@ -42,6 +44,8 @@ const HomeScreen = ({navigation, route}, props) => {
   const [updateFeesModal, setUpdateFees] = useState(false);
   const [deleteFeesModal, setDeleteFees] = useState(false);
 
+  const [changeClassModal, setChangeClassModal] = useState(false);
+
   const addStudentRef = useRef(null);
   const viewStudentRef = useRef(null);
   const UpdateStudentRef = useRef(null);
@@ -51,6 +55,8 @@ const HomeScreen = ({navigation, route}, props) => {
   const viewFeesRef = useRef(null);
   const updateFeesRef = useRef(null);
   const deleteFeesRef = useRef(null);
+
+  const changeClassRef = useRef(null);
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -116,7 +122,7 @@ const HomeScreen = ({navigation, route}, props) => {
                 }
               />
             </Pressable>
-            <Pressable onPress={() => navigation.navigate('ViewStudent')}>
+            <Pressable onPress={() => setViewStudent(true)}>
               <ServiceBox
                 text="View"
                 Icon={
@@ -210,12 +216,18 @@ const HomeScreen = ({navigation, route}, props) => {
         <Box mt="$2">
           <Heading mb="$2">Teacher Services</Heading>
           <HStack alignItems="center">
-            <ServiceBox
-              text="Class"
-              Icon={
-                <CalendarClock size={25} color="#000000" style={{margin: 10}} />
-              }
-            />
+            <Pressable onPress={() => setChangeClassModal(true)}>
+              <ServiceBox
+                text="Class"
+                Icon={
+                  <CalendarClock
+                    size={25}
+                    color="#000000"
+                    style={{margin: 10}}
+                  />
+                }
+              />
+            </Pressable>
           </HStack>
         </Box>
         <Box mt="$2">
@@ -296,7 +308,14 @@ const HomeScreen = ({navigation, route}, props) => {
         <UpdateFees
           showModal={updateFeesModal}
           setShowModal={setUpdateFees}
-          reg={updateFeesModal}
+          ref={updateFeesModal}
+        />
+      ) : null}
+      {changeClassModal ? (
+        <ChangeTeacherClass
+          showModal={changeClassModal}
+          setShowModal={setChangeClassModal}
+          ref={changeClassRef}
         />
       ) : null}
     </ScrollView>
