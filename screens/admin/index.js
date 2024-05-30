@@ -4,6 +4,7 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import HomeScreen from './HomeScreen';
 import Index from '..';
 import Header from '../../components/Header';
+import ViewStudent from './studentServices/ViewStudent';
 
 const Tab = createBottomTabNavigator();
 
@@ -20,6 +21,11 @@ const AdminDashboard = ({navigation}) => {
       <Tab.Screen
         name="Index"
         component={({navigation}) => navigation.popToTop()}
+      />
+      <Tab.Screen
+        name="ViewStudent"
+        component={ViewStudent}
+        options={{tabBarLabel: '', tabBarIcon: () => null, headerShown: false}}
       />
     </Tab.Navigator>
   );

@@ -54,7 +54,7 @@ const Login = ({navigation, route}) => {
 
         if (userDoc && type === userDoc.data().role) {
           setUser({
-            uid,
+            uid: uid,
             email: userEmail,
             role: userDoc.data().role,
           });
@@ -65,20 +65,15 @@ const Login = ({navigation, route}) => {
           throw Error();
         }
       } else {
-        console.log('IDENTITY: ', identity);
-        console.log('PASSWORD: ', password);
-
         const userDoc = await firestore()
           .collection('users')
           .where('regNo', '==', identity)
           .where('password', '==', password)
           .get();
 
-        console.log('DOCS: ', userDoc.docs[0].data());
         const {regNo: studentRegNo} = userDoc.docs[0].data();
         const {uid} = userDoc.docs[0].id;
-        console.log('UID: ', uid);
-        console.log('regNo: ', studentRegNo);
+
         if (userDoc.docs && type === userDoc.docs[0].data().role) {
           setUser({
             uid,
@@ -105,7 +100,7 @@ const Login = ({navigation, route}) => {
             <Box style={styles.margining}>
               <FormControlCustom
                 label={type !== 'student' ? 'Email' : 'Registration no'}
-                type={type !== 'student' ? 'email' : 'text'}
+                type={type !== 'student' ? 'email' : 'numeric'}
                 placeholder={type !== 'student' ? 'Email' : 'Registration no'}
                 helperText={
                   type !== 'student'
@@ -115,6 +110,7 @@ const Login = ({navigation, route}) => {
                 value={identity}
                 onChange={setIdentity}
                 icon={type !== 'student' ? MailCheck : User}
+                keyboardType={type === 'student' ? 'numeric' : 'default'}
               />
             </Box>
             <Box style={styles.Lastmargining}>

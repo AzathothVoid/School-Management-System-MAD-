@@ -5,6 +5,7 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {config} from '@gluestack-ui/config';
 import {AuthProvider} from './auth/AuthContext';
+import {FirebaseProvider} from './contexts/FirebaseContext';
 
 //firestore
 import firestore from '@react-native-firebase/firestore';
@@ -36,11 +37,11 @@ function App() {
   ];
 
   var user = {
-    name: "Bruno",
-    regNo: "FA21-BCS-001",
+    name: 'Bruno',
+    regNo: 'FA21-BCS-001',
     class: 8,
-    gender: "Male"
-  }
+    gender: 'Male',
+  };
 
   const Stack = createNativeStackNavigator();
 
@@ -48,29 +49,31 @@ function App() {
     <NavigationContainer>
       <GluestackUIProvider config={config}>
         <AuthProvider>
-          <Stack.Navigator initialRouteName="index">
-            <Stack.Screen
-              name="index"
-              options={{headerShown: false}}
-              component={Index}
-            />
-            <Stack.Screen name="ViewFees" component={ViewFees} />
-            <Stack.Screen name="ViewSyllabus" component={ViewSyllabus} />
-            <Stack.Screen name="ViewMarks" component={ViewMarks} />
-            <Stack.Screen name="Student" component={StudentDashboard} />
-            <Stack.Screen name="Teacher" component={TeacherDashboard} />
-            <Stack.Screen name="Admin" component={AdminDashboard} />
-            <Stack.Screen name="StudentDashboard">
-            {(props) => <StudentDashboard {...props} user={user} />}
-          </Stack.Screen>
-          <Stack.Screen
-              name="Login"
-              options={{headerShown: false}}
-              component={Login}
-            />
-            <Stack.Screen name="Marks" component={Marks} />
-          <Stack.Screen name="AddMarks" component={AddMarks} />
-        </Stack.Navigator>
+          <FirebaseProvider>
+            <Stack.Navigator initialRouteName="index">
+              <Stack.Screen
+                name="index"
+                options={{headerShown: false}}
+                component={Index}
+              />
+              <Stack.Screen name="ViewFees" component={ViewFees} />
+              <Stack.Screen name="ViewSyllabus" component={ViewSyllabus} />
+              <Stack.Screen name="ViewMarks" component={ViewMarks} />
+              <Stack.Screen name="Student" component={StudentDashboard} />
+              <Stack.Screen name="Teacher" component={TeacherDashboard} />
+              <Stack.Screen name="Admin" component={AdminDashboard} />
+              <Stack.Screen name="StudentDashboard">
+                {props => <StudentDashboard {...props} user={user} />}
+              </Stack.Screen>
+              <Stack.Screen
+                name="Login"
+                options={{headerShown: false}}
+                component={Login}
+              />
+              <Stack.Screen name="Marks" component={Marks} />
+              <Stack.Screen name="AddMarks" component={AddMarks} />
+            </Stack.Navigator>
+          </FirebaseProvider>
         </AuthProvider>
       </GluestackUIProvider>
     </NavigationContainer>

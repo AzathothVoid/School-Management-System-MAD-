@@ -1,21 +1,20 @@
 import React from 'react';
-import {
-  Button,
-  ButtonText,
-  ButtonIcon,
-  Box,
-  VStack,
-  Center,
-} from '@gluestack-ui/themed';
+import {VStack, Card, Text} from '@gluestack-ui/themed';
 
-const ServiceBox = props => {
+const ServiceBox = ({Icon, text, action}) => {
   return (
-    <Box>
-      <Button>
-        <ButtonIcon as={props.icon} />
-        <ButtonText>{props.text}</ButtonText>
-      </Button>
-    </Box>
+    <VStack alignItems="center" mx="$2" my="$1">
+      <Card
+        size="md"
+        variant="elevated"
+        bg="$textLight0"
+        p="$2"
+        rounded="$lg"
+        mb="$2">
+        {Icon}
+      </Card>
+      <Text size="sm">{text}</Text>
+    </VStack>
   );
 };
 

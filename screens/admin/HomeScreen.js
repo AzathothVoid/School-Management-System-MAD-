@@ -1,8 +1,8 @@
-import React, {useLayoutEffect} from 'react';
+import React, {useLayoutEffect, useState, useRef} from 'react';
 import {StyleSheet} from 'react-native';
 import {
   Box,
-  View,
+  Pressable,
   HStack,
   Image,
   VStack,
@@ -10,20 +10,58 @@ import {
   Text,
   Heading,
 } from '@gluestack-ui/themed';
-import {User} from 'lucide-react-native';
+import {
+  User,
+  ClipboardMinus,
+  Landmark,
+  BookOpenText,
+  CalendarClock,
+} from 'lucide-react-native';
+import {ScrollView} from '@gluestack-ui/themed';
 import Header from '../../components/Header';
 import ServiceBox from '../../components/ServiceBox';
 
-const HomeScreen = ({navigation}, props) => {
+import AddStudent from './studentServices/AddStudent';
+import ViewStudent from './studentServices/ViewStudent';
+import UpdateStudent from './studentServices/UpdateStudent';
+import DeleteStudent from './studentServices/DeleteStudent';
+
+import AddFees from './feeServices/AddFees';
+import UpdateFees from './feeServices/UpdateFees';
+import ViewFees from './feeServices/ViewFees';
+import DeleteFees from './feeServices/DeleteFees';
+
+const HomeScreen = ({navigation, route}, props) => {
+  const [addStudentModal, setAddStudent] = useState(false);
+  const [viewStudentModal, setViewStudent] = useState(false);
+  const [updateStudentModal, setUpdateStudent] = useState(false);
+  const [deleteStudentModal, setDeleteStudent] = useState(false);
+
+  const [addFeesModal, setAddFees] = useState(false);
+  const [viewFeesModal, setViewFees] = useState(false);
+  const [updateFeesModal, setUpdateFees] = useState(false);
+  const [deleteFeesModal, setDeleteFees] = useState(false);
+
+  const addStudentRef = useRef(null);
+  const viewStudentRef = useRef(null);
+  const UpdateStudentRef = useRef(null);
+  const deleteStudentRef = useRef(null);
+
+  const addFeesRef = useRef(null);
+  const viewFeesRef = useRef(null);
+  const updateFeesRef = useRef(null);
+  const deleteFeesRef = useRef(null);
+
   useLayoutEffect(() => {
     navigation.setOptions({
       headerBackTitle: 'Back',
       // headerTitle: props => <Header {...props} />,
+      headerShown: false,
     });
   }, [navigation]);
 
   return (
-    <View m="$5">
+    <ScrollView m="$5">
       <Box rounded="$lg" bg="$blue700" px="$4" alignItems="center" py="$6">
         <HStack>
           <Image
@@ -65,9 +103,203 @@ const HomeScreen = ({navigation}, props) => {
           />
         </HStack>
       </Box>
-      <Heading>Student Services</Heading>
-      <Heading>Teacher Services</Heading>
-    </View>
+
+      <Box>
+        <Box mt="$2">
+          <Heading mb="$2">Student Services</Heading>
+          <HStack alignItems="center">
+            <Pressable onPress={() => setAddStudent(true)}>
+              <ServiceBox
+                text="Add"
+                Icon={
+                  <Landmark size={25} color="#000000" style={{margin: 10}} />
+                }
+              />
+            </Pressable>
+            <Pressable onPress={() => navigation.navigate('ViewStudent')}>
+              <ServiceBox
+                text="View"
+                Icon={
+                  <BookOpenText
+                    size={25}
+                    color="#000000"
+                    style={{margin: 10}}
+                  />
+                }
+              />
+            </Pressable>
+            <Pressable onPress={() => setUpdateStudent(true)}>
+              <ServiceBox
+                text="Update"
+                Icon={
+                  <CalendarClock
+                    size={25}
+                    color="#000000"
+                    style={{margin: 10}}
+                  />
+                }
+              />
+            </Pressable>
+            <Pressable onPress={() => setDeleteStudent(true)}>
+              <ServiceBox
+                text="Delete"
+                Icon={
+                  <CalendarClock
+                    size={25}
+                    color="#000000"
+                    style={{margin: 10}}
+                  />
+                }
+              />
+            </Pressable>
+          </HStack>
+        </Box>
+        <Box mt="$2">
+          <Heading mb="$2">Fee Services</Heading>
+          <HStack>
+            <Pressable onPress={() => setAddFees(true)}>
+              <ServiceBox
+                text="Add"
+                Icon={
+                  <CalendarClock
+                    size={25}
+                    color="#000000"
+                    style={{margin: 10}}
+                  />
+                }
+              />
+            </Pressable>
+            <Pressable onPress={() => setViewFees(true)}>
+              <ServiceBox
+                text="View"
+                Icon={
+                  <CalendarClock
+                    size={25}
+                    color="#000000"
+                    style={{margin: 10}}
+                  />
+                }
+              />
+            </Pressable>
+            <Pressable onPress={() => setUpdateFees(true)}>
+              <ServiceBox
+                text="Update"
+                Icon={
+                  <CalendarClock
+                    size={25}
+                    color="#000000"
+                    style={{margin: 10}}
+                  />
+                }
+              />
+            </Pressable>
+            <Pressable onPress={() => setDeleteFees(true)}>
+              <ServiceBox
+                text="Delete"
+                Icon={
+                  <CalendarClock
+                    size={25}
+                    color="#000000"
+                    style={{margin: 10}}
+                  />
+                }
+              />
+            </Pressable>
+          </HStack>
+        </Box>
+        <Box mt="$2">
+          <Heading mb="$2">Teacher Services</Heading>
+          <HStack alignItems="center">
+            <ServiceBox
+              text="Class"
+              Icon={
+                <CalendarClock size={25} color="#000000" style={{margin: 10}} />
+              }
+            />
+          </HStack>
+        </Box>
+        <Box mt="$2">
+          <Heading>Other Services</Heading>
+          <HStack>
+            <ServiceBox
+              text="Reports"
+              Icon={
+                <CalendarClock size={25} color="#000000" style={{margin: 10}} />
+              }
+            />
+            <ServiceBox
+              text="Timetable"
+              Icon={
+                <CalendarClock size={25} color="#000000" style={{margin: 10}} />
+              }
+            />
+            <ServiceBox
+              text="Syllabus"
+              Icon={
+                <CalendarClock size={25} color="#000000" style={{margin: 10}} />
+              }
+            />
+          </HStack>
+        </Box>
+      </Box>
+      {addStudentModal ? (
+        <AddStudent
+          showModal={addStudentModal}
+          setShowModal={setAddStudent}
+          ref={addStudentRef}
+        />
+      ) : null}
+      {viewStudentModal ? (
+        <ViewStudent
+          showModal={viewStudentModal}
+          setShowModal={setViewStudent}
+          ref={viewStudentRef}
+        />
+      ) : null}
+      {updateStudentModal ? (
+        <UpdateStudent
+          showModal={updateStudentModal}
+          setShowModal={setUpdateStudent}
+          ref={UpdateStudentRef}
+        />
+      ) : null}
+      {deleteStudentModal ? (
+        <DeleteStudent
+          Student
+          showModal={deleteStudentModal}
+          setShowModal={setDeleteStudent}
+          ref={deleteStudentRef}
+        />
+      ) : null}
+      {addFeesModal ? (
+        <AddFees
+          showModal={addFeesModal}
+          setShowModal={setAddFees}
+          ref={addFeesRef}
+        />
+      ) : null}
+      {viewFeesModal ? (
+        <ViewFees
+          showModal={viewFeesModal}
+          setShowModal={setViewFees}
+          ref={viewFeesRef}
+        />
+      ) : null}
+      {deleteFeesModal ? (
+        <DeleteFees
+          showModal={deleteFeesModal}
+          setShowModal={setDeleteFees}
+          ref={deleteFeesRef}
+        />
+      ) : null}
+      {updateFeesModal ? (
+        <UpdateFees
+          showModal={updateFeesModal}
+          setShowModal={setUpdateFees}
+          reg={updateFeesModal}
+        />
+      ) : null}
+    </ScrollView>
   );
 };
 
