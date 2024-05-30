@@ -19,6 +19,7 @@ import {
   Icon,
   ChevronDownIcon,
   ScrollView,
+  Text,
 } from '@gluestack-ui/themed';
 import {CloseIcon} from '@gluestack-ui/themed';
 import FormControlCustom from '../../../components/FormControlCustom';
@@ -76,6 +77,7 @@ const AddStudent = ({showModal, setShowModal, ref}) => {
           email: email,
           password: password,
           remarks: remarks,
+          fees: [],
         });
 
       if (!doc) {

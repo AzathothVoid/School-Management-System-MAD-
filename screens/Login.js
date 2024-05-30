@@ -54,7 +54,7 @@ const Login = ({navigation, route}) => {
 
         if (userDoc && type === userDoc.data().role) {
           setUser({
-            uid,
+            uid: uid,
             email: userEmail,
             role: userDoc.data().role,
           });

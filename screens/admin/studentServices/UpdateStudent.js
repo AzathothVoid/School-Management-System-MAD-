@@ -19,6 +19,7 @@ import {
   Icon,
   ChevronDownIcon,
   ScrollView,
+  Text,
 } from '@gluestack-ui/themed';
 import FormControlCustom from '../../../components/FormControlCustom';
 import DatePicker from 'react-native-date-picker';

@@ -1,39 +1,70 @@
-import React from 'react';
-import {Box, VStack, HStack, ScrollView} from '@gluestack-ui/themed';
-import {DataTable} from 'react-native-paper';
-
+import React, {useState, useRef} from 'react';
+import {
+  FormControl,
+  FormControlLabel,
+  FormControlLabelText,
+  VStack,
+  Center,
+  Select,
+  Box,
+  SelectItem,
+  SelectTrigger,
+  SelectIcon,
+  SelectInput,
+  SelectBackdrop,
+  SelectContent,
+  SelectDragIndicator,
+  SelectDragIndicatorWrapper,
+  SelectPortal,
+  Icon,
+  ChevronDownIcon,
+  ScrollView,
+  Pressable,
+  Heading,
+} from '@gluestack-ui/themed';
+import FormControlCustom from '../../../components/FormControlCustom';
+import DatePicker from 'react-native-date-picker';
 import ModalCustom from '../../../components/ModalCustom';
-
 import {useFirebase} from '../../../contexts/FirebaseContext';
+import ViewCard from '../../../components/ViewCard';
+import firestore from '@react-native-firebase/firestore';
 
-const ViewStudent = ({showModal, setShowModal, ref}) => {
-  const {data, populateReferences} = useFirebase();
+const ViewStudent = ({showModal, setShowModal, ref}, props) => {
+  const {data} = useFirebase();
 
-  //   <ModalCustom showModal={showModal} setShowModal={setShowModal} ref={ref}>
+  console.log('DATA: ', data);
+
+  const [feesID, setFeesID] = useState(null);
+  const [regNo, setRegNo] = useState('');
+
+  const studentData = data.students;
+
+  const studentElements = studentData.map(student => {
+    return (
+      <ViewCard
+        actionText="Explore"
+        action={() => console.log('viewed')}
+        setState={setFeesID}
+        heading={student.studentName}
+        itemsData={student}
+      />
+    );
+  });
+
   return (
-    <DataTable>
-      <ScrollView>
-        <DataTable.Header>
-          <DataTable.Title>Name</DataTable.Title>
-          <DataTable.Title>Reg No</DataTable.Title>
-          <DataTable.Title>Class</DataTable.Title>
-          <DataTable.Title>Gender</DataTable.Title>
-        </DataTable.Header>
-        {data.students.map((student, index) => {
-          console.log(student);
-          return (
-            <DataTable.Row key={index}>
-              <DataTable.Cell>{student.name}</DataTable.Cell>
-              <DataTable.Cell>{student.regNo}</DataTable.Cell>
-              <DataTable.Cell>{student.residence}</DataTable.Cell>
-              <DataTable.Cell>{student.gender}</DataTable.Cell>
-            </DataTable.Row>
-          );
-        })}
-      </ScrollView>
-    </DataTable>
+    <Box>
+      <ModalCustom
+        showModal={showModal}
+        setShowModal={setShowModal}
+        ref={ref}
+        action={() => setShowModal(false)}
+        actionText={'Close'}
+        size="full"
+        heading="Students">
+        {studentElements}
+      </ModalCustom>
+    </Box>
   );
-  //   </ModalCustom>
 };
 
 export default ViewStudent;

@@ -25,11 +25,12 @@ const ModalCustom = ({
   actionText,
   ref,
   scrollHorizontal,
+  size,
 }) => {
   return (
     <Modal
       isOpen={showModal}
-      size="lg"
+      size={size ? size : 'lg'}
       onClose={() => {
         setShowModal(false);
       }}
