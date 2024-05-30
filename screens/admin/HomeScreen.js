@@ -116,7 +116,7 @@ const HomeScreen = ({navigation, route}, props) => {
                 }
               />
             </Pressable>
-            <Pressable onPress={() => navigation.navigate('ViewStudent')}>
+            <Pressable onPress={() => setViewStudent(true)}>
               <ServiceBox
                 text="View"
                 Icon={
