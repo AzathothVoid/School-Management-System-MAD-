@@ -44,6 +44,7 @@ const AddFees = ({showModal, setShowModal, ref}) => {
   const [remarks, setRemarks] = useState('');
 
   const [resultModal, setResultModal] = useState(false);
+  const [resultText, setResultText] = useState('');
   const resultRef = useRef(null);
 
   const studentData = data.students.find(student => student.regNo === regNo);
@@ -56,23 +57,35 @@ const AddFees = ({showModal, setShowModal, ref}) => {
     try {
       if (!studentData) return;
 
+      const studentToAdd = {
+        amountDue: parseInt(amountDue),
+        amountPaid: parseInt(amountPaid),
+        lateFees: Boolean(lateFees),
+        payableAmount: parseInt(payableAmount),
+        paymentDate: paymentDate.toDateString(),
+        student: student,
+        studentName: studentName,
+        regNo: parseInt(regNo),
+        remarks: remarks,
+      };
+
+      if (
+        Object.values(studentToAdd).some(
+          value => value === null || value === undefined || value === '',
+        )
+      ) {
+        throw new Error('All fields must be filled');
+      }
+
+      if (data.students.find(student => student.regNo === regNo)) {
+        throw new Error('Student already Registered');
+      }
+
       const student = firestore().collection('students').doc(studentData._id);
 
       if (!student) throw Error();
 
-      const doc = await firestore()
-        .collection('fees')
-        .add({
-          amountDue: parseInt(amountDue),
-          amountPaid: parseInt(amountPaid),
-          lateFees: Boolean(lateFees),
-          payableAmount: parseInt(payableAmount),
-          paymentDate: paymentDate.toDateString(),
-          student: student,
-          studentName: studentName,
-          regNo: parseInt(regNo),
-          remarks: remarks,
-        });
+      const doc = await firestore().collection('fees').add(studentToAdd);
 
       await student.update({
         fees: [...studentData.fees, doc.id],
@@ -206,18 +219,15 @@ const AddFees = ({showModal, setShowModal, ref}) => {
       </ModalCustom>
 
       <ModalCustom
-        action={setResultModal}
+        action={() => setResultModal(false)}
         actionText={'OK'}
-        heading="Success"
+        heading={'Alert'}
         showModal={resultModal}
         setShowModal={setResultModal}
         ref={resultRef}>
-        >
-        <Center>
-          <Box>
-            <Text>Fees Added</Text>
-          </Box>
-        </Center>
+        <Box>
+          <Text>{resultText}</Text>
+        </Box>
       </ModalCustom>
     </Box>
   );

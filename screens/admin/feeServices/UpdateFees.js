@@ -20,7 +20,7 @@ import {
   ChevronDownIcon,
   ScrollView,
   Pressable,
-  Heading,
+  Text,
 } from '@gluestack-ui/themed';
 import FormControlCustom from '../../../components/FormControlCustom';
 import DatePicker from 'react-native-date-picker';
@@ -50,6 +50,7 @@ const UpdateFees = ({showModal, setShowModal, ref}, props) => {
   const studentData = data.students.find(student => student.regNo === regNo);
 
   const [resultModal, setResultModal] = useState(false);
+  const [resultText, setResultText] = useState('');
   const resultRef = useRef(null);
 
   const feesDisplayRef = useRef(null);
@@ -296,18 +297,15 @@ const UpdateFees = ({showModal, setShowModal, ref}, props) => {
       </ModalCustom>
 
       <ModalCustom
-        action={setResultModal}
+        action={() => setResultModal(false)}
         actionText={'OK'}
-        heading="Success"
+        heading={'Alert'}
         showModal={resultModal}
         setShowModal={setResultModal}
         ref={resultRef}>
-        >
-        <Center>
-          <Box>
-            <Heading>Fees Updated</Heading>
-          </Box>
-        </Center>
+        <Box>
+          <Text>{resultText}</Text>
+        </Box>
       </ModalCustom>
     </Box>
   );
