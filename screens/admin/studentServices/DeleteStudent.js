@@ -34,15 +34,11 @@ const DeleteFees = ({showModal, setShowModal, ref}, props) => {
 
   console.log('DATA: ', data);
 
-  const [studentID, setStudentID] = useState(null);
   const [regNo, setRegNo] = useState('');
 
   const [resultModal, setResultModal] = useState(false);
   const [resultText, setResultText] = useState('');
   const resultRef = useRef(null);
-
-  const [deleteModal, setDeleteModal] = useState(false);
-  const [studentDisplayModal, setStudentDisplayModal] = useState(false);
 
   console.log('REG NO: ', regNo);
 
@@ -54,7 +50,7 @@ const DeleteFees = ({showModal, setShowModal, ref}, props) => {
 
   const deleteStudents = async () => {
     try {
-      const studentRef = firestore().collection('students').doc(studentID);
+      const studentRef = firestore().collection('students').doc(regNo[1]);
       const studentGet = await studentRef.get();
 
       const studentClassRef = studentGet.data().admissionClass;
@@ -66,12 +62,18 @@ const DeleteFees = ({showModal, setShowModal, ref}, props) => {
 
       await studentRef.delete();
 
+      var oldStudentArray =
+        studentClassGet.data().students &&
+        studentClassGet.data().students.length !== 0
+          ? studentClassGet.data().students
+          : [];
+
+      oldStudentArray = oldStudentArray.filter(
+        student => student.regNo !== parseInt(regNo),
+      );
+
       await studentClassRef.update({
-        students: studentClassGet
-          .data()
-          .students.filter(
-            async student => (await student.student.get()).id !== studentID,
-          ),
+        students: oldStudentArray,
       });
 
       setResultModal(true);
@@ -82,12 +84,10 @@ const DeleteFees = ({showModal, setShowModal, ref}, props) => {
     }
   };
 
-  const displayData = () => {
-    setStudentDisplayModal(true);
-  };
-
   const studentElements = data.students.map(student => {
-    return <SelectItem label={student.regNo} value={student.regNo} />;
+    return (
+      <SelectItem label={student.regNo} value={[student.regNo, student._id]} />
+    );
   });
 
   console.log('FEES DATA:', studentData);
@@ -98,16 +98,18 @@ const DeleteFees = ({showModal, setShowModal, ref}, props) => {
         showModal={showModal}
         setShowModal={setShowModal}
         ref={ref}
-        action={displayData}
+        action={deleteStudents}
         actionText={'Delete'}
         heading="Delete Student">
         <FormControl isRequired>
           <Select
-            selectedValue={regNo.toString()}
+            selectedValue={regNo}
             onValueChange={regNo => setRegNo(regNo)}>
             <SelectTrigger variant="outline" size="md">
               <SelectInput
-                placeholder={regNo ? ' ' + regNo : 'Select Registratio no'}
+                placeholder={
+                  regNo.length !== 0 ? ' ' + regNo[0] : 'Select Registratio no'
+                }
               />
               <SelectIcon mr="$3">
                 <Icon as={ChevronDownIcon} />
@@ -124,25 +126,6 @@ const DeleteFees = ({showModal, setShowModal, ref}, props) => {
             </SelectPortal>
           </Select>
         </FormControl>
-      </ModalCustom>
-
-      <ModalCustom
-        showModal={studentDisplayModal}
-        setShowModal={setStudentDisplayModal}
-        ref={studentDisplayRef}
-        action={() => setStudentDisplayModal(false)}
-        actionText={'Close'}
-        size="full"
-        heading="Delete Fees">
-        {studentData ? (
-          <ViewCard
-            actionText="Delete"
-            action={deleteStudents}
-            setState={setStudentID}
-            heading={studentData.name}
-            itemsData={studentData}
-          />
-        ) : null}
       </ModalCustom>
 
       <ModalCustom

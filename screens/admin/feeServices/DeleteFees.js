@@ -37,7 +37,6 @@ const DeleteFees = ({showModal, setShowModal, ref}, props) => {
   const [feesID, setFeesID] = useState(null);
   const [regNo, setRegNo] = useState('');
 
-  const [deleteModal, setDeleteModal] = useState(false);
   const [feesDisplayModal, setFeesDisplayModal] = useState(false);
 
   const [resultModal, setResultModal] = useState(false);
@@ -45,6 +44,7 @@ const DeleteFees = ({showModal, setShowModal, ref}, props) => {
   const resultRef = useRef(null);
 
   const studentData = data.students.find(student => student.regNo === regNo);
+  const feesData = data.fees.filter(fees => fees.regNo === regNo);
 
   const feesDisplayRef = useRef(null);
 
@@ -84,8 +84,6 @@ const DeleteFees = ({showModal, setShowModal, ref}, props) => {
     return <SelectItem label={student.regNo} value={student.regNo} />;
   });
 
-  const feesData = data.fees.filter(fees => fees.regNo === regNo);
-
   const feesElements = feesData.map(fees => {
     return (
       <ViewCard
@@ -107,7 +105,7 @@ const DeleteFees = ({showModal, setShowModal, ref}, props) => {
         setShowModal={setShowModal}
         ref={ref}
         action={displayData}
-        actionText={'Delete'}
+        actionText={'Show'}
         heading="Delete Fees">
         <FormControl isRequired>
           <Select

@@ -88,7 +88,15 @@ const UpdateFees = ({showModal, setShowModal, ref}, props) => {
       if (!doc) throw Error('Fee record does not exist');
       if (!student) throw Error('Student does not exist');
 
-      await doc.update(feesToUpate);
+      await doc.update(feesToUpdate);
+
+      if (
+        (await doc.get()).data().regNo === (await student.get()).data().regNo
+      ) {
+        await student.update({
+          fees: [...studentData.fees, doc.id],
+        });
+      }
 
       setResultModal(true);
       setResultText('Fee Updated');
