@@ -56,41 +56,59 @@ const AddStudent = ({showModal, setShowModal, ref}) => {
     return <SelectItem label={Class.className} value={Class._id} />;
   });
 
-  console.log('DATE TYPE: ', DOB.toDateString());
-  console.log(new Date(DOB.toDateString()).toLocaleTimeString());
-
-  const addStudent = () => {
+  const addStudent = async () => {
     try {
       const Class = firestore().collection('classes').doc(admissionClass);
-      const doc = firestore()
-        .collection('students')
-        .add({
-          regNo: parseInt(regNo),
-          dateOfReg: dateOfReg.toDateString(),
-          DOB: DOB.toDateString(),
-          gender: gender,
-          fatherName: fatherName,
-          caste: caste,
-          occupation: occupation,
-          residence: residence,
-          admissionClass: Class,
-          name: studentName,
-          email: email,
-          password: password,
-          remarks: remarks,
-          fees: [],
-        });
+      const classData = await Class.get();
 
-      if (!doc) {
-        throw Error();
+      const studentToAdd = {
+        regNo: parseInt(regNo),
+        dateOfReg: dateOfReg.toDateString(),
+        DOB: DOB.toDateString(),
+        gender: gender,
+        fatherName: fatherName,
+        caste: caste,
+        occupation: occupation,
+        residence: residence,
+        admissionClass: Class,
+        name: studentName,
+        email: email,
+        password: password,
+        remarks: remarks,
+        fees: [],
+      };
+
+      if (
+        Object.values(studentToAdd).some(
+          value => value === null || value === undefined || value === '',
+        )
+      ) {
+        throw new Error('All fields must be filled');
       }
 
-      setShowModal(false);
+      if (data.students.find(student => student.regNo == regNo))
+        throw new Error('Student already Exists');
+
+      const doc = await firestore().collection('students').add(studentToAdd);
+
+      await Class.update({
+        students: classData.students.push({
+          marks: [],
+          student: doc,
+          regNo: regNo,
+        }),
+      });
+
+      if (!doc) {
+        throw Error('Student not able to be created');
+      }
+
       setResultModal(true);
 
       console.log('Student Added');
     } catch (error) {
-      console.log('Errors: ', error);
+      setResultModal(true);
+      setResultText(error.message);
     }
   };
 

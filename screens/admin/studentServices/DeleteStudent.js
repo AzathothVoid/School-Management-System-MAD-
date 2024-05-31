@@ -57,17 +57,12 @@ const DeleteFees = ({showModal, setShowModal, ref}, props) => {
       const studentRef = firestore().collection('students').doc(studentID);
       const studentGet = await studentRef.get();
 
-      // const studentClass = await student.admissionClass.get();
-
       const studentClassRef = studentGet.data().admissionClass;
       const studentClassGet = await studentClassRef.get();
 
-      // return console.log(
-      //   (await studentClassGet.data().students[0].student.get()).id,
-      // );
-
-      if (!studentRef) throw Error();
-      if (!studentClassRef) throw Error();
+      if (!studentRef) throw Error('Student Does not exist');
+      if (!studentClassRef)
+        throw Error('Student registered class does not exist');
 
       await studentRef.delete();
 
@@ -79,11 +74,11 @@ const DeleteFees = ({showModal, setShowModal, ref}, props) => {
           ),
       });
 
-      setDeleteModal(false);
-
-      console.log('Student updated');
+      setResultModal(true);
+      setResultText('Student Deleted');
     } catch (error) {
-      console.log(error);
+      setResultModal(true);
+      setResultText(error.message);
     }
   };
 

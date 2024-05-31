@@ -52,25 +52,27 @@ const DeleteFees = ({showModal, setShowModal, ref}, props) => {
     try {
       const fee = feesData.find(fee => fee._id === feesID);
 
-      if (!fee) return console.log('FEE NOT FOUND');
+      if (!fee) throw new Error('Fee not found');
 
       const students = firestore().collection('students').doc(studentData.id);
 
       const doc = firestore().collection('fees').doc(feesID);
 
-      if (!doc) throw Error();
+      if (!doc) throw Error('No such fee record');
 
       await doc.delete();
+
+      if (!students) return;
 
       await students.update({
         fees: studentData.fees.filter(fees => fees != feesID),
       });
 
-      setFeesDisplayModal(false);
-
-      console.log('Fee Deleted');
+      setResultModal(true);
+      setResultText('Fee Deleted');
     } catch (error) {
-      console.log(error);
+      setResultModal(true);
+      setResultText(error.message);
     }
   };
 

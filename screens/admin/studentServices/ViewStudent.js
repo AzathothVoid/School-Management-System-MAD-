@@ -45,7 +45,7 @@ const ViewStudent = ({showModal, setShowModal, ref}, props) => {
         actionText="Explore"
         action={() => console.log('viewed')}
         setState={setFeesID}
-        heading={student.studentName}
+        heading={student.name}
         itemsData={student}
       />
     );

@@ -61,15 +61,11 @@ const UpdateFees = ({showModal, setShowModal, ref}, props) => {
 
   const updateFees = async () => {
     try {
-      const student = await firestore()
-        .collection('students')
-        .doc(studentData.id);
+      const student = firestore().collection('students').doc(studentData._id);
 
       const doc = firestore().collection('fees').doc(feesID);
 
-      if (!doc) throw Error();
-
-      await doc.update({
+      const feesToUpdate = {
         amountDue: parseInt(amountDue),
         amountPaid: parseInt(amountPaid),
         lateFees: Boolean(lateFees),
@@ -79,13 +75,26 @@ const UpdateFees = ({showModal, setShowModal, ref}, props) => {
         studentName: studentName,
         regNo: parseInt(regNo),
         remarks: remarks,
-      });
+      };
+
+      if (
+        Object.values(feesToUpdate).some(
+          value => value === null || value === undefined || value === '',
+        )
+      ) {
+        throw new Error('All fields must be filled');
+      }
+
+      if (!doc) throw Error('Fee record does not exist');
+      if (!student) throw Error('Student does not exist');
+
+      await doc.update(feesToUpate);
 
       setResultModal(true);
-
-      console.log('Student updated');
+      setResultText('Fee Updated');
     } catch (error) {
-      console.log(error);
+      setResultModal(true);
+      setResultText(error.message);
     }
   };
 
