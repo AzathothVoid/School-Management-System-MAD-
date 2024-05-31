@@ -9,13 +9,18 @@ import {
   Divider,
   Text,
   Heading,
+  Center,
 } from '@gluestack-ui/themed';
 import {
   User,
-  ClipboardMinus,
+  Pen,
   Landmark,
   BookOpenText,
   CalendarClock,
+  CalendarMinus2,
+  ClipboardMinus,
+  ClipboardPlus,
+  FileText,
 } from 'lucide-react-native';
 import {ScrollView} from '@gluestack-ui/themed';
 import Header from '../../components/Header';
@@ -68,14 +73,16 @@ const HomeScreen = ({navigation, route}, props) => {
 
   useLayoutEffect(() => {
     navigation.setOptions({
-      headerBackTitle: 'Back',
-      // headerTitle: props => <Header {...props} />,
       headerShown: false,
     });
   }, [navigation]);
 
   return (
-    <ScrollView m="$5">
+    <ScrollView style={styles.container} m="$3">
+      <Center mb="$2">
+        <Heading size="xl">Admin Panel</Heading>
+      </Center>
+
       <Box rounded="$lg" bg="$blue700" px="$4" alignItems="center" py="$6">
         <HStack>
           <Image
@@ -117,7 +124,6 @@ const HomeScreen = ({navigation, route}, props) => {
           />
         </HStack>
       </Box>
-
       <Box>
         <Box mt="$2">
           <Heading mb="$2">Student Services</Heading>
@@ -158,7 +164,7 @@ const HomeScreen = ({navigation, route}, props) => {
               <ServiceBox
                 text="Delete"
                 Icon={
-                  <CalendarClock
+                  <CalendarMinus2
                     size={25}
                     color="#000000"
                     style={{margin: 10}}
@@ -175,11 +181,7 @@ const HomeScreen = ({navigation, route}, props) => {
               <ServiceBox
                 text="Add"
                 Icon={
-                  <CalendarClock
-                    size={25}
-                    color="#000000"
-                    style={{margin: 10}}
-                  />
+                  <Landmark size={25} color="#000000" style={{margin: 10}} />
                 }
               />
             </Pressable>
@@ -187,7 +189,7 @@ const HomeScreen = ({navigation, route}, props) => {
               <ServiceBox
                 text="View"
                 Icon={
-                  <CalendarClock
+                  <BookOpenText
                     size={25}
                     color="#000000"
                     style={{margin: 10}}
@@ -211,7 +213,7 @@ const HomeScreen = ({navigation, route}, props) => {
               <ServiceBox
                 text="Delete"
                 Icon={
-                  <CalendarClock
+                  <CalendarMinus2
                     size={25}
                     color="#000000"
                     style={{margin: 10}}
@@ -227,13 +229,7 @@ const HomeScreen = ({navigation, route}, props) => {
             <Pressable onPress={() => setChangeClassModal(true)}>
               <ServiceBox
                 text="Class"
-                Icon={
-                  <CalendarClock
-                    size={25}
-                    color="#000000"
-                    style={{margin: 10}}
-                  />
-                }
+                Icon={<Pen size={25} color="#000000" style={{margin: 10}} />}
               />
             </Pressable>
           </HStack>
@@ -243,15 +239,13 @@ const HomeScreen = ({navigation, route}, props) => {
           <HStack>
             <ServiceBox
               text="Reports"
-              Icon={
-                <CalendarClock size={25} color="#000000" style={{margin: 10}} />
-              }
+              Icon={<FileText size={25} color="#000000" style={{margin: 10}} />}
             />
             <Pressable onPress={() => setManageTimeTableModal(true)}>
               <ServiceBox
                 text="Timetable"
                 Icon={
-                  <CalendarClock
+                  <ClipboardMinus
                     size={25}
                     color="#000000"
                     style={{margin: 10}}
@@ -263,7 +257,7 @@ const HomeScreen = ({navigation, route}, props) => {
               <ServiceBox
                 text="Syllabus"
                 Icon={
-                  <CalendarClock
+                  <ClipboardPlus
                     size={25}
                     color="#000000"
                     style={{margin: 10}}
@@ -357,11 +351,14 @@ const HomeScreen = ({navigation, route}, props) => {
 };
 
 const styles = StyleSheet.create({
-  headerStyle: {
-    backgroundColor: '#1C588C',
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
   },
-  headerTitleStyle: {
-    color: '#fff',
+  image: {
+    marginVertical: 10,
+    width: 300,
+    height: 200,
   },
 });
 

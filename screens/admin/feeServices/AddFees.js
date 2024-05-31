@@ -55,9 +55,7 @@ const AddFees = ({showModal, setShowModal, ref}) => {
 
   const addFees = async () => {
     try {
-      if (!studentData) return;
-
-      const studentToAdd = {
+      const feesToAdd = {
         amountDue: parseInt(amountDue),
         amountPaid: parseInt(amountPaid),
         lateFees: Boolean(lateFees),
@@ -70,34 +68,30 @@ const AddFees = ({showModal, setShowModal, ref}) => {
       };
 
       if (
-        Object.values(studentToAdd).some(
+        Object.values(feesToAdd).some(
           value => value === null || value === undefined || value === '',
         )
       ) {
         throw new Error('All fields must be filled');
       }
 
-      if (data.students.find(student => student.regNo === regNo)) {
-        throw new Error('Student already Registered');
-      }
-
       const student = firestore().collection('students').doc(studentData._id);
 
-      if (!student) throw Error();
+      if (!student) throw Error('Student does not exist');
 
-      const doc = await firestore().collection('fees').add(studentToAdd);
+      const doc = await firestore().collection('fees').add(feesToAdd);
 
       await student.update({
         fees: [...studentData.fees, doc.id],
       });
 
-      if (!doc) {
-        throw Error();
-      }
+      if (!doc) throw new Error('Fee not able to be added');
+
       setResultModal(true);
-      console.log('Student Added');
+      setResultText('Fee record added');
     } catch (error) {
-      console.log('Errors: ', error);
+      setResultModal(true);
+      setResultText(error.message);
     }
   };
 

@@ -25,15 +25,11 @@ import FormControlCustom from '../../../components/FormControlCustom';
 import DatePicker from 'react-native-date-picker';
 import ModalCustom from '../../../components/ModalCustom';
 import {useFirebase} from '../../../contexts/FirebaseContext';
+import firestore from '@react-native-firebase/firestore';
 
 const UpdateStudent = ({showModal, setShowModal, ref}, props) => {
   const {data} = useFirebase();
 
-  console.log('Inside');
-
-  console.log('STUDENT DATA: ', data.students);
-
-  console.log('Clicked');
   const [regNo, setRegNo] = useState('');
   const [dateOfReg, setDateOfReg] = useState(new Date());
   const [studentName, setStudentName] = useState('');
@@ -61,16 +57,107 @@ const UpdateStudent = ({showModal, setShowModal, ref}, props) => {
 
   const studentData = data.students.find(student => student.regNo === regNo);
 
-  console.log('Student data: ', studentData);
-  console.log('DOB:', DOB.toDateString());
-  console.log('Testing: ', new Date(DOB.toDateString()));
+  const classElements = data.classes.map(Class => {
+    return <SelectItem label={Class.className} value={Class._id} />;
+  });
 
-  const updateStudent = () => {
-    console.log('Student added');
+  console.log('Student data: ', studentData);
+
+  const updateStudent = async () => {
+    try {
+      const student = firestore().collection('students').doc(studentData._id);
+      const updatedClass = firestore()
+        .collection('classes')
+        .doc(admissionClass);
+
+      const oldClass = studentData.admissionClass;
+
+      const oldClassData = await oldClass.get();
+      const updatedClassData = await updatedClass.get();
+
+      console.log('updated class: ', updatedClass);
+
+      const studentToUpdate = {
+        regNo: parseInt(regNo),
+        dateOfReg: dateOfReg.toDateString(),
+        DOB: DOB.toDateString(),
+        gender: gender,
+        fatherName: fatherName,
+        caste: caste,
+        occupation: occupation,
+        residence: residence,
+        admissionClass: updatedClass,
+        name: studentName,
+        email: email,
+        password: password,
+        remarks: remarks,
+      };
+
+      console.log('HERE AT THIS STEP');
+
+      if (
+        Object.values(studentToUpdate).some(
+          value => value === null || value === undefined || value === '',
+        )
+      ) {
+        throw new Error('All fields must be filled');
+      }
+
+      if (!student) throw Error('Student does not exist');
+
+      await student.update(studentToUpdate);
+
+      if (oldClassData.id !== admissionClass) {
+        const oldStudentArray = oldClassData.data().students
+          ? oldClassData.data().students
+          : [];
+        oldStudentArray.filter(student => student.regNo === parseInt(regNo));
+
+        console.log('OLD CLASS: ', oldClassData.id);
+
+        await oldClass.update({
+          students: oldStudentArray,
+        });
+
+        console.log('Student Array: ', updatedClassData.data().students);
+        const studentArray = updatedClassData.data().students
+          ? updatedClassData.data().students
+          : [];
+
+        studentArray.push({
+          marks: updatedClassData.data().subjects.map(subject => {
+            return {
+              finalTerm: 0,
+              firstTerm: 0,
+              midTerm: 0,
+              subject: subject.name,
+            };
+          }),
+          regNo: parseInt(regNo),
+          student: student,
+        });
+
+        console.log('STUDENT ARRAY UPDATD: ', studentArray);
+
+        await updatedClass.update({
+          students: studentArray,
+        });
+      }
+
+      setResultModal(true);
+      setResultText('Student Updated');
+    } catch (error) {
+      setResultModal(true);
+      setResultText(error.message);
+    }
   };
 
-  const loadData = () => {
+  const loadData = async () => {
     console.log('Updating: ', regNo);
+    const Class = await studentData.admissionClass.get();
+
+    console.log('CLASS: ', Class);
+
     setDateOfReg(new Date(studentData.dateOfReg));
     setStudentName(studentData.name);
     setDOB(new Date(studentData.DOB));
@@ -79,13 +166,14 @@ const UpdateStudent = ({showModal, setShowModal, ref}, props) => {
     setCaste(studentData.caste);
     setOccupation(studentData.occupation);
     setResidence(studentData.residence);
-    setAdmissionClass(studentData.class);
+    setAdmissionClass(Class.data().className);
     setEmail(studentData.email);
     setPassword(studentData.password);
     setRemarks(studentData.remarks);
     setUpdateModal(true);
   };
 
+  console.log('Admission Class: ', admissionClass);
   return (
     <Box>
       <ModalCustom
@@ -207,13 +295,34 @@ const UpdateStudent = ({showModal, setShowModal, ref}, props) => {
             label={'Residence'}
             required={true}
           />
-          <FormControlCustom
-            type={'text'}
-            value={admissionClass}
-            onChange={setAdmissionClass}
-            label={'Admission Class'}
-            required={true}
-          />
+          <FormControl isRequired>
+            <FormControlLabel mb="$2">
+              <FormControlLabelText>Admission Class</FormControlLabelText>
+            </FormControlLabel>
+            <Select
+              selectedValue={admissionClass}
+              onValueChange={admClass => setAdmissionClass(admClass)}>
+              <SelectTrigger variant="outline" size="md">
+                <SelectInput
+                  placeholder={
+                    admissionClass ? ' ' + admissionClass : 'Select Class'
+                  }
+                />
+                <SelectIcon mr="$3">
+                  <Icon as={ChevronDownIcon} />
+                </SelectIcon>
+              </SelectTrigger>
+              <SelectPortal>
+                <SelectBackdrop />
+                <SelectContent>
+                  <SelectDragIndicatorWrapper>
+                    <SelectDragIndicator />
+                  </SelectDragIndicatorWrapper>
+                  <ScrollView>{classElements}</ScrollView>
+                </SelectContent>
+              </SelectPortal>
+            </Select>
+          </FormControl>
           <FormControlCustom
             type={'email'}
             value={email}

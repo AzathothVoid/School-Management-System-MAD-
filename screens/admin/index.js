@@ -1,14 +1,17 @@
-import React, {useLayoutEffect} from 'react';
+import React, {useLayoutEffect, useContext} from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import HomeScreen from './HomeScreen';
 import Index from '..';
 import Header from '../../components/Header';
-import ViewStudent from './studentServices/ViewStudent';
+import {LogOut, Home} from 'lucide-react-native';
+import {AuthContext} from '../../auth/AuthContext';
 
 const Tab = createBottomTabNavigator();
 
 const AdminDashboard = ({navigation}) => {
+  const {setUser} = useContext(AuthContext);
+
   useLayoutEffect(() => {
     navigation.setOptions({
       headerShown: false,
@@ -17,15 +20,24 @@ const AdminDashboard = ({navigation}) => {
 
   return (
     <Tab.Navigator initialRouteName="Home">
-      <Tab.Screen name="Home" component={HomeScreen} />
       <Tab.Screen
-        name="Index"
-        component={({navigation}) => navigation.popToTop()}
+        name="Home"
+        component={HomeScreen}
+        options={{
+          title: 'Home',
+          tabBarIcon: ({color, size}) => <Home color={color} size={size} />,
+        }}
       />
       <Tab.Screen
-        name="ViewStudent"
-        component={ViewStudent}
-        options={{tabBarLabel: '', tabBarIcon: () => null, headerShown: false}}
+        name="Index"
+        options={{
+          title: 'Logout',
+          tabBarIcon: ({color, size}) => <LogOut color={color} size={size} />,
+        }}
+        component={({navigation}) => {
+          setUser(null);
+          navigation.popToTop();
+        }}
       />
     </Tab.Navigator>
   );
