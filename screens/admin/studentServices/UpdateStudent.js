@@ -108,11 +108,17 @@ const UpdateStudent = ({showModal, setShowModal, ref}, props) => {
       await student.update(studentToUpdate);
 
       if (oldClassData.id !== admissionClass) {
-        const oldStudentArray = oldClassData.data().students
-          ? oldClassData.data().students
-          : [];
-        oldStudentArray.filter(student => student.regNo === parseInt(regNo));
+        var oldStudentArray =
+          oldClassData.data().students &&
+          oldClassData.data().students.length !== 0
+            ? oldClassData.data().students
+            : [];
 
+        oldStudentArray = oldStudentArray.filter(
+          student => student.regNo !== parseInt(regNo),
+        );
+
+        console.log('OLD STUDENT ARRAY: ', oldStudentArray);
         console.log('OLD CLASS: ', oldClassData.id);
 
         await oldClass.update({
@@ -120,9 +126,13 @@ const UpdateStudent = ({showModal, setShowModal, ref}, props) => {
         });
 
         console.log('Student Array: ', updatedClassData.data().students);
-        const studentArray = updatedClassData.data().students
-          ? updatedClassData.data().students
-          : [];
+        var studentArray =
+          updatedClassData.data().students &&
+          updatedClassData.data().students.length !== 0
+            ? updatedClassData.data().students
+            : [];
+
+        console.log('STUDENT: ', student);
 
         studentArray.push({
           marks: updatedClassData.data().subjects.map(subject => {
@@ -137,10 +147,8 @@ const UpdateStudent = ({showModal, setShowModal, ref}, props) => {
           student: student,
         });
 
-        console.log('STUDENT ARRAY UPDATD: ', studentArray);
-
         await updatedClass.update({
-          students: studentArray,
+          students: studentArray ? studentArray : [],
         });
       }
 

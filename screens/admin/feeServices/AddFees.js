@@ -55,6 +55,8 @@ const AddFees = ({showModal, setShowModal, ref}) => {
 
   const addFees = async () => {
     try {
+      const student = firestore().collection('students').doc(studentData._id);
+
       const feesToAdd = {
         amountDue: parseInt(amountDue),
         amountPaid: parseInt(amountPaid),
@@ -67,6 +69,8 @@ const AddFees = ({showModal, setShowModal, ref}) => {
         remarks: remarks,
       };
 
+      console.log('FEES TO ADD: ', feesToAdd);
+
       if (
         Object.values(feesToAdd).some(
           value => value === null || value === undefined || value === '',
@@ -74,8 +78,6 @@ const AddFees = ({showModal, setShowModal, ref}) => {
       ) {
         throw new Error('All fields must be filled');
       }
-
-      const student = firestore().collection('students').doc(studentData._id);
 
       if (!student) throw Error('Student does not exist');
 
@@ -183,7 +185,9 @@ const AddFees = ({showModal, setShowModal, ref}) => {
             </FormControlLabel>
             <Select onValueChange={feeStatus => setLateFees(feeStatus)}>
               <SelectTrigger variant="outline" size="md">
-                <SelectInput placeholder={lateFees ? lateFees : 'Fee Status'} />
+                <SelectInput
+                  placeholder={lateFees ? '' + lateFees : 'Fee Status'}
+                />
                 <SelectIcon mr="$3">
                   <Icon as={ChevronDownIcon} />
                 </SelectIcon>

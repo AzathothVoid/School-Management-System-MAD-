@@ -91,12 +91,34 @@ const AddStudent = ({showModal, setShowModal, ref}) => {
 
       const doc = await firestore().collection('students').add(studentToAdd);
 
-      await Class.update({
-        students: classData.students.push({
-          marks: [],
-          student: doc,
-          regNo: regNo,
+      const user = await firestore()
+        .collection('users')
+        .add({
+          regNo: parseInt(regNo),
+          password: password,
+          role: 'student',
+        });
+
+      var studentArray =
+        classData.data().students && classData.data().students.length !== 0
+          ? classData.data().students
+          : [];
+
+      studentArray.push({
+        marks: classData.data().subjects.map(subject => {
+          return {
+            finalTerm: 0,
+            firstTerm: 0,
+            midTerm: 0,
+            subject: subject.name,
+          };
         }),
+        regNo: parseInt(regNo),
+        student: doc,
+      });
+
+      await Class.update({
+        students: studentArray ? studentArray : [],
       });
 
       if (!doc) {
@@ -104,8 +126,7 @@ const AddStudent = ({showModal, setShowModal, ref}) => {
       }
 
       setResultModal(true);
-
-      console.log('Student Added');
+      setResultText('Student added');
     } catch (error) {
       setResultModal(true);
       setResultText(error.message);
