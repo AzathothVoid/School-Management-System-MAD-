@@ -56,12 +56,10 @@ const AddStudent = ({showModal, setShowModal, ref}) => {
     return <SelectItem label={Class.className} value={Class._id} />;
   });
 
-  console.log('DATE TYPE: ', DOB.toDateString());
-  console.log(new Date(DOB.toDateString()).toLocaleTimeString());
-
   const addStudent = () => {
     try {
       const Class = firestore().collection('classes').doc(admissionClass);
+
       const doc = firestore()
         .collection('students')
         .add({
@@ -85,12 +83,12 @@ const AddStudent = ({showModal, setShowModal, ref}) => {
         throw Error();
       }
 
-      setShowModal(false);
       setResultModal(true);
 
       console.log('Student Added');
     } catch (error) {
-      console.log('Errors: ', error);
+      setResultModal(true);
+      setResultText(error.message);
     }
   };
 

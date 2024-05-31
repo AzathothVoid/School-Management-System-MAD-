@@ -8,21 +8,6 @@ export const useFirebase = () => {
   return useContext(FirebaseContext);
 };
 
-const populateReferences = async (doc, references) => {
-  const populatedDoc = {...doc.data(), id: doc.id};
-
-  for (const [key, ref] of Object.entries(references)) {
-    if (doc.get(key)) {
-      const refDoc = await doc.get(key).get();
-      populatedDoc[ref] = refDoc.exists
-        ? {...refDoc.data(), id: refDoc.id}
-        : null;
-    }
-  }
-
-  return populatedDoc;
-};
-
 export const FirebaseProvider = ({children}) => {
   const [data, setData] = useState(null);
 
@@ -81,10 +66,8 @@ export const FirebaseProvider = ({children}) => {
   }, []);
 
   return (
-    <FirebaseContext.Provider value={{data, populateReferences}}>
+    <FirebaseContext.Provider value={{data}}>
       {children}
     </FirebaseContext.Provider>
   );
 };
-
-export default FirebaseContext;

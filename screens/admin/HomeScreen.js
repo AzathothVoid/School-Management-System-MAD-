@@ -33,6 +33,9 @@ import DeleteFees from './feeServices/DeleteFees';
 
 import ChangeTeacherClass from './teacherServices/ChangeTeacherClass';
 
+import ManageTimetable from './otherServices/ManageTimetable';
+import ManageSyllabus from './otherServices/ManageSyllabus';
+
 const HomeScreen = ({navigation, route}, props) => {
   const [addStudentModal, setAddStudent] = useState(false);
   const [viewStudentModal, setViewStudent] = useState(false);
@@ -46,6 +49,9 @@ const HomeScreen = ({navigation, route}, props) => {
 
   const [changeClassModal, setChangeClassModal] = useState(false);
 
+  const [manageTimetableModal, setManageTimeTableModal] = useState(false);
+  const [manageSyllabusModal, setManageSyllabusModal] = useState(false);
+
   const addStudentRef = useRef(null);
   const viewStudentRef = useRef(null);
   const UpdateStudentRef = useRef(null);
@@ -57,6 +63,8 @@ const HomeScreen = ({navigation, route}, props) => {
   const deleteFeesRef = useRef(null);
 
   const changeClassRef = useRef(null);
+  const manageTimetableRef = useRef(null);
+  const manageSyllabusRef = useRef(null);
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -239,18 +247,30 @@ const HomeScreen = ({navigation, route}, props) => {
                 <CalendarClock size={25} color="#000000" style={{margin: 10}} />
               }
             />
-            <ServiceBox
-              text="Timetable"
-              Icon={
-                <CalendarClock size={25} color="#000000" style={{margin: 10}} />
-              }
-            />
-            <ServiceBox
-              text="Syllabus"
-              Icon={
-                <CalendarClock size={25} color="#000000" style={{margin: 10}} />
-              }
-            />
+            <Pressable onPress={() => setManageTimeTableModal(true)}>
+              <ServiceBox
+                text="Timetable"
+                Icon={
+                  <CalendarClock
+                    size={25}
+                    color="#000000"
+                    style={{margin: 10}}
+                  />
+                }
+              />
+            </Pressable>
+            <Pressable onPress={() => setManageSyllabusModal(true)}>
+              <ServiceBox
+                text="Syllabus"
+                Icon={
+                  <CalendarClock
+                    size={25}
+                    color="#000000"
+                    style={{margin: 10}}
+                  />
+                }
+              />
+            </Pressable>
           </HStack>
         </Box>
       </Box>
@@ -308,7 +328,7 @@ const HomeScreen = ({navigation, route}, props) => {
         <UpdateFees
           showModal={updateFeesModal}
           setShowModal={setUpdateFees}
-          ref={updateFeesModal}
+          ref={updateFeesRef}
         />
       ) : null}
       {changeClassModal ? (
@@ -316,6 +336,20 @@ const HomeScreen = ({navigation, route}, props) => {
           showModal={changeClassModal}
           setShowModal={setChangeClassModal}
           ref={changeClassRef}
+        />
+      ) : null}
+      {manageTimetableModal ? (
+        <ManageTimetable
+          showModal={manageTimetableModal}
+          setShowModal={setManageTimeTableModal}
+          modalRef={manageTimetableRef}
+        />
+      ) : null}
+      {manageSyllabusModal ? (
+        <ManageSyllabus
+          showModal={manageSyllabusModal}
+          setShowModal={setManageSyllabusModal}
+          modalRef={manageSyllabusRef}
         />
       ) : null}
     </ScrollView>

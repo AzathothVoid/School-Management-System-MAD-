@@ -10,6 +10,7 @@ import {
   ButtonText,
   Icon,
   ArrowRightIcon,
+  ScrollView,
 } from '@gluestack-ui/themed';
 import {DataTable} from 'react-native-paper';
 
@@ -39,7 +40,9 @@ function ViewCard({itemsData, heading, setState, actionText, action}) {
         {heading}
       </Heading>
 
-      <DataTable>{elements}</DataTable>
+      <DataTable>
+        <ScrollView>{elements}</ScrollView>
+      </DataTable>
       <HStack mt="$3" reversed={true}>
         <Button
           size="sm"
